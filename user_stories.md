@@ -1,4 +1,4 @@
-### Admin User Stories
+## Admin User Stories
 
 As an admin, I want to:
 1. Manage user accounts, so that I can create, update, or deactivate doctor and patient profiles.
@@ -7,7 +7,9 @@ As an admin, I want to:
 4. Configure appointment settings, so I can define rules for scheduling, cancellations, and time slots.
 5. Approve or revoke doctor access, so that only verified practitioners are allowed on the platform.
 
-### Patient User Stories
+---
+
+## Patient User Stories
 
 As a patient, I want to: 
 1. Register and log in securely, so I can access my dashboard and book appointments.
@@ -16,7 +18,9 @@ As a patient, I want to:
 4. Book and cancel appointments, so I can manage my visits easily.
 5. Access my medical records and prescriptions, so I can review past consultations and prescriptions.
 
-### Doctor User Stories
+---
+
+## Doctor User Stories
 
 As a doctor, I want to:
 1. Set and update my availability, so that patients can schedule appointments where I'm free.
