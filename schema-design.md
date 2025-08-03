@@ -20,8 +20,8 @@ attributes, data types, keys, and constraints.
 |-------------|-----------|-------------|
 | patient_id | INT | PRIMARY KEY, AUTO_INCREMENT |
 | full_name | VARCHAR(100) | NOT NULL |
-|| email | VARCHAR(100) | NOT NULL, UNIQU  
-|| date_of_birth | DATE | NOT NULL |
+| email | VARCHAR(100) | NOT NULL, UNIQUE  
+| date_of_birth | DATE | NOT NULL |
 | gender | ENUM('M','F','Other') | NOT NULL |
 | phone_number | VARCHAR(15) | |
 | created_at | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP |
