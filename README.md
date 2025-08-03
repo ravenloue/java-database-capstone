@@ -1,1 +1,1 @@
-# Smart Clinic Managemenrt System
+# Smart Clinic Management System
