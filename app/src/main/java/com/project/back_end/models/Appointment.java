@@ -1,8 +1,16 @@
 package com.project.back_end.models;
 
-import java.beans.Transient;
-import java.lang.annotation.Inherited;
-import java.time.LocalDateTime;
+import java.lang.Long;
+import java.time.*;
+import jakarta.persistence.Transient;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Future;
+
 
 @Entity
 public class Appointment {
@@ -35,15 +43,15 @@ public class Appointment {
     }
 
     @Transient
-    private getAppointmentTimeOnly() {
+    private LocalTime getAppointmentTimeOnly() {
         return appointmentTime.toLocalTime();
     }
 
     // No argument constructor
     public Appointment() {
-        this.id = 0;
-        this.doctor = "Doctor Name";
-        this.patient = "John Doe";
+        this.id = 0L;
+        this.doctor = null;
+        this.patient = null;
         this.appointmentTime = null;
         this.status = 0;
     }

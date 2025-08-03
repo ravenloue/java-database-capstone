@@ -1,5 +1,13 @@
 package com.project.back_end.models;
 
+import java.lang.Long;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Admin {
 
@@ -16,7 +24,7 @@ public class Admin {
 
     // No Argument Constructor for JPA
     public Admin() {
-        this.id = 0;
+        this.id = 0L;
         this.username = "Default name";
         this.password = "password";
     }

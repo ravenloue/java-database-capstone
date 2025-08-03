@@ -1,5 +1,10 @@
 package com.project.back_end.models;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 @Document(collection = "prescriptions")
 public class Prescription {
 
@@ -27,7 +32,7 @@ public class Prescription {
     public Prescription() {
         this.id = "0";
         this.patientName = "Default Name";
-        this.appointmentId = 0;
+        this.appointmentId = 0L;
         this.medication = "Medication";
         this.dosage = "Dosage";
         this.doctorNotes = "Notes";
