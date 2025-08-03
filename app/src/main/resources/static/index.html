@@ -1,25 +1,55 @@
 <!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <!-- meta tags -->
+        <meta charset="UTF-8">
+        <title>Select Role</title>>
+        
+        <!-- icon -->
+        <link rel="favicon" href="./assets/images/logo/logo.png">
+
+        <!-- stylesheets -->
+        <link rel="stylesheet" href="./assets/css/index.css">
+        <link rel="stylesheet" href="./assets/css/style.css">
+
+        <!-- scripts -->
+        <script src="./js/util.js" defer></script>
+        <script src="./js/render.js" defer></script>
+        <script type="module" src="../js/services/index.js" defer></script>
+    </head>
+
+    <body>
+        <main class="main-content">
+            <div id="header">
+
+            </div>
+            <div class="container">
+                <div class="wrapper">
+                    <h2>Select Your Role</h2>
+                    <button id="admin-btn" onclick="setRole(Admin)">Admin</button>
+                    <button id="doctor-btn" onclick="setRole(Doctor)">Doctor</button>
+                    <button id="patient-btn" onclick="setRole(Patient)">Patient</button>
+
+                </div>
+            </div>
+            <div id="modal" class="modal">
+                <button id="closeModal">X</button>
+                <div id="modal-body"></div>
+            </div>
+            <div id="footer">
+
+            </div>
+        </main>
+    </body>
+
+</html>
 <!-- 
 
 Step-by-Step Explanation of `index.html`.
 This file allows users to select a role (Admin, Patient, Doctor) 
 and triggers modal-based login functionality.
-
-1. Label the File
-
-   * Add a comment at the very top to identify the file as `index.html`. This helps developers stay organized.
-
-2. Declare Document Type
-
-   * Use the declaration for HTML5 so browsers know how to render the page correctly.
-
-3. Start the HTML Document
-
-   * Begin the HTML structure and set the document language to English to improve accessibility and SEO `lang="en"`.
-
-4. Head Section (Metadata and Resources)
-
-   * Open the `<head>` section which contains settings and links that don’t show up visually.
 
 5. Set Character Encoding
 
