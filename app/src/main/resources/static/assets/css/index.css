@@ -9,9 +9,14 @@
 
 /* Base HTML & Body */
 .html, body {
-  height: 100vw;
+  height: 100%;
   font-family: 'Roboto', sans-serif;
   background-color: #f9f9f9;
+  background-image: url('../images/defineRole/index.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* Wrapper */
@@ -36,11 +41,6 @@
   align-items: center;
   flex-direction: column;
   text-align: center;
-  background-image: url('../images/defineRole/index.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
 }
 
 /* Heading (h2) */

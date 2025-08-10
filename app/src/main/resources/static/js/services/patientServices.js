@@ -3,18 +3,19 @@ import { API_BASE_URL } from "../config/config.js";
 const PATIENT_API = API_BASE_URL + '/patient'
 
 
-//For creating a patient in db
+/*
+ * Handle patient sign-up
+ */
 export async function patientSignup(data) {
   try {
     const response = await fetch(`${PATIENT_API}`,
       {
         method: "POST",
-        headers: {
-          "Content-type": "application/json"
-        },
+        headers: { "Content-type": "application/json" },
         body: JSON.stringify(data)
       }
     );
+
     const result = await response.json();
     if (!response.ok) {
       throw new Error(result.message);
@@ -22,26 +23,27 @@ export async function patientSignup(data) {
     return { success: response.ok, message: result.message }
   }
   catch (error) {
-    console.error("Error :: patientSignup :: ", error)
+    console.error("Error signing up patient: ", error)
     return { success: false, message: error.message }
   }
 }
 
-//For logging in patient
+/*
+ * Logging in as a patient
+ */
 export async function patientLogin(data) {
-  console.log("patientLogin :: ", data)
-  return await fetch(`${PATIENT_API}/login`, {
+  return await fetch(`${PATIENT_API}/login`,
+  {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   });
-
-
 }
 
-// For getting patient data (name ,id , etc ). Used in booking appointments
+/*
+ * Get logged-in patient data for booking appointments or
+ * viewing patient profiles
+ */
 export async function getPatientData(token) {
   try {
     const response = await fetch(`${PATIENT_API}/${token}`);
@@ -54,7 +56,11 @@ export async function getPatientData(token) {
   }
 }
 
-// the Backend API for fetching the patient record(visible in Doctor Dashboard) and Appointments (visible in Patient Dashboard) are same based on user(patient/doctor).
+/*
+ * Backend API for fetching the patient record (visible in Doctor
+ * Dashboard) and Appointments (visible in Patient Dashboard) are
+ * same based on user (patient/doctor).
+ */ 
 export async function getPatientAppointments(id, token, user) {
   try {
     const response = await fetch(`${PATIENT_API}/${id}/${user}/${token}`);
@@ -71,23 +77,23 @@ export async function getPatientAppointments(id, token, user) {
   }
 }
 
+/*
+ * Handles real-time filtering and searching appointments
+ */
 export async function filterAppointments(condition, name, token) {
   try {
-    const response = await fetch(`${PATIENT_API}/filter/${condition}/${name}/${token}`, {
+    const response = await fetch(`${PATIENT_API}/filter/${condition}/${name}/${token}`,
+    {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
     });
 
     if (response.ok) {
       const data = await response.json();
       return data;
-
     } else {
       console.error("Failed to fetch doctors:", response.statusText);
       return { appointments: [] };
-
     }
   } catch (error) {
     console.error("Error:", error);
