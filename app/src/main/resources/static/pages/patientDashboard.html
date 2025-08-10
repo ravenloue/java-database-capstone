@@ -3,23 +3,36 @@
 <html lang="en">
 
 <head>
+    <!-- meta -->
     <meta charset="UTF-8">
-    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logo.png" />
     <title>PatientDashboard</title>
+    
+    <!-- icon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/logo.png" />
+    
+    <!-- stylesheets -->
     <link rel="stylesheet" href="../assets/css/adminDashboard.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/patientDashboard.css">
+
+    <!-- scripts -->
     <script src="../js/render.js" defer></script>
     <script src="../js/util.js" defer></script>
     <script src="../js/components/header.js" defer></script>
     <script src="../js/components/footer.js" defer></script>
-    <script type="module" src="../js/components/modals.js"></script>
+    <script type="module" src="../js/components/modals.js" defer></script>
+    <script type="module" src="../js/patientDashboard.js" defer></script>
 </head>
 
 <body onload="renderContent()">
+    <!-- container -->
     <div class="container">
+        <!-- wrapper -->
         <div class="wrapper">
+            <!-- header -->
             <div id="header"></div>
+
+            <!-- main content -->
             <main class="main-content">
                 <input type="text" id="searchBar" class="searchBar" placeholder="Search Bar for custom output" />
                 <div class="filter-wrapper">
@@ -48,6 +61,8 @@
                 </div>
                 <div id="content"></div>
             </main>
+
+            <!-- footer -->
             <div id="footer"></div>
         </div>
     </div>
@@ -57,7 +72,6 @@
             <div id="modal-body"></div>
         </div>
     </div>
-    <script type="module" src="../js/patientDashboard.js" defer></script>
 </body>
 
 </html>

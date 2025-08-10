@@ -1,53 +1,114 @@
-/* this is the style sheet file for index.htlm  */
+/* Index CSS Stylesheet */
 
-/* 
-**Global Reset (`*`)**
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-* Remove all default margin and padding.
-* Use `border-box` for sizing to include padding and border in element size.
+/* Base HTML & Body */
+.html, body {
+  height: 100vw;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f9f9f9;
+}
 
-**Base (`html, body`)**
+/* Wrapper */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 
-* Set height to 100% for full viewport layout.
-* Use the `'Roboto'` sans-serif font for modern, clean typography.
+/* Header and Footer */
+#header, #footer {
+  width: 100vw;
+}
 
-**Layout Wrapper (`.wrapper`)**
+/* Main section */
 
-* Use a vertical flexbox layout.
-* Ensure the wrapper covers at least the full height of the screen (`min-height: 100vh`).
+.main-content{
+  flex-grow: 1;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  background-image: url('../images/defineRole/index.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 
-**Heading (`h2`)**
+/* Heading (h2) */
+h2 {
+  font-size: 48px;
+  margin-bottom: 50px;
+  color: #003e3e;
+  font-weight: bold;
+  font-family: 'Alegreya', 'Roboto', sans-serif;
+}
 
-* Set a large font size (`48px`) for prominence.
-* Add a bottom margin of `50px` for spacing.
-* Use a dark teal color (`#003e3e`).
-* Make the font bold and use a blended font stack (`'Alegreya', 'Roboto', sans-serif`) for elegant styling.
+/* Buttons */
+button {
+  background-color: #015c5d;
+  color: white;
+  border: none; 
+  border-radius: 12px; 
+  padding: 10px 20px;
+  width: 200px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+button:hover {
+  background-color: #A62B1F;
+}
 
-**Main Section (`.main-content`)**
+/* Role selection buttons */
+.dashboard-btn:hover {
+  background-color: #003e3e;
+}
 
-* Allow the section to grow to fill space with `flex-grow: 1`.
-* Add `40px` of internal padding.
-* Center content both horizontally and vertically using `justify-content` and `align-items`.
-* Display items in a column direction.
-* Center all text.
-* Apply a full-screen background image with:
+/* Modal Styles */
+.modal {
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  * `cover` size
-  * `center` positioning
-  * no repeat
-  * `fixed` attachment to keep image still during scroll
+#modal-body {
+  background-color: white;
+  padding: 20px;
+  border: none;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 4px, 10px, rgba(0, 0, 0, 0.2);
+}
 
-**Buttons (`button`)**
+.close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+}
 
-* Style with a teal green background (`#015c5d`) and white text.
-* Remove borders and round the corners (`12px`).
-* Use `10px 20px` padding and set width to `200px`.
-* Add a top margin of `10px` for spacing.
-* Enable pointer cursor and readable font size (`16px`).
-* On hover, change background color to bold red (`#A62B1F`).
-
-**Dashboard Buttons (`.dashboard-btn`)**
-
-* Use the same base green background (`#015c5d`) as the default button.
-* On hover, darken the background to deep teal (`#003e3e`) for visual feedback.
- */
+.close:hover {
+  color: red;
+  cursor: pointer;
+}
