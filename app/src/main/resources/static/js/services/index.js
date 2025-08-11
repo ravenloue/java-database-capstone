@@ -12,11 +12,13 @@ window.onload = function () {
 
     if (adminBtn) {
         adminBtn.addEventListener("click", () => {
+            console.log("admin clicked")
             openModal("adminLogin");
         });
     }
     if (doctorBtn) {
         doctorBtn.addEventListener("click", () => {
+            console.log("doctor clicked")
             openModal("doctorLogin");
         });
     }
@@ -32,13 +34,13 @@ window.adminLoginHandler = async function () {
         const response = await fetch(ADMIN_API, {
             method: "POST", 
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(admin)
         });
 
         if (response.ok) {
             const result = await response.json();
             localStorage.setItem("token", result.token);
-            selectRole("admin");
+            setRole("admin");
         } else {
             alert("Invalid credentials.");
         }
@@ -50,21 +52,21 @@ window.adminLoginHandler = async function () {
 
 // Doctor Login handler
 window.doctorLoginHandler = async function () {
-    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const doctor = { username, password };
+    const doctor = { email, password };
 
     try {
         const response = await fetch(DOCTOR_API, {
             method: "POST", 
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(doctor)
         });
 
         if (response.ok) {
             const result = await response.json();
             localStorage.setItem("token", result.token);
-            selectRole("doctor");
+            setRole("doctor");
         } else {
             alert("Invalid credentials.");
         }
