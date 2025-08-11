@@ -67,6 +67,7 @@ public class Doctor {
         return phone;
     }
 
+    @JsonProperty("availableTimes")
     public List<String> getAvailability() {
         return availableTimes;
     }
@@ -96,6 +97,7 @@ public class Doctor {
         this.phone = phone;
     }
 
+    @JsonProperty("availableTimes")
     public void setAvailability(List<String> availableTimes) {
         this.availableTimes = availableTimes;
     }

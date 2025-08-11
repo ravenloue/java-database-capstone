@@ -40,7 +40,7 @@ window.adminLoginHandler = async function () {
         if (response.ok) {
             const result = await response.json();
             localStorage.setItem("token", result.token);
-            setRole("admin");
+            selectRole("admin");
         } else {
             alert("Invalid credentials.");
         }
@@ -66,7 +66,7 @@ window.doctorLoginHandler = async function () {
         if (response.ok) {
             const result = await response.json();
             localStorage.setItem("token", result.token);
-            setRole("doctor");
+            selectRole("doctor");
         } else {
             alert("Invalid credentials.");
         }

@@ -79,7 +79,7 @@ export function showBookingOverlay(e, doctor, patient) {
       ripple.remove();
       modalApp.remove();
     } else {
-      alert("❌ Failed to book an appointment :: " + message);
+      alert("Failed to book an appointment :: " + message);
     }
   });
 }

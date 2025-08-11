@@ -73,10 +73,10 @@ export function openModal(type) {
   }
 
   document.getElementById('modal-body').innerHTML = modalContent;
-  document.getElementById('modal').style.display = 'block';
+  document.getElementById('modal').style.visibility = 'visible';
 
   document.getElementById('closeModal').onclick = () => {
-    document.getElementById('modal').style.display = 'none';
+    document.getElementById('modal').style.visibility = 'hidden';
   };
 
   if (type === "patientSignup") {

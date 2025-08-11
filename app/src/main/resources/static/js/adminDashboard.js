@@ -2,6 +2,7 @@
 import { openModal } from './components/modals.js';
 import { getDoctors  , filterDoctors , saveDoctor } from './services/doctorServices.js';
 import { createDoctorCard } from './components/doctorCard.js';
+//import './util.js';
 
 
 // Event Listeners
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadDoctorCards();
 });
 document.getElementById("searchBar").addEventListener(
-    "input", filterDoctorsOnChange);
+    "input", debounce(filterDoctorsOnChange, 300));
 document.getElementById("filterTime").addEventListener(
     "change", filterDoctorsOnChange);
 document.getElementById("filterSpecialty").addEventListener(

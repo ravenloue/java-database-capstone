@@ -10,7 +10,7 @@ let patientName = null;
 // Event listeners
 document.getElementById("searchBar").addEventListener("input", (e) => {
   const value = e.target.value.trim();
-  patientName = value.length > 0 ? value : "null";
+  patientName = value.length > 0 ? value : null;
   loadAppointments();
 });
 document.getElementById("todayButton").addEventListener("click", () => {

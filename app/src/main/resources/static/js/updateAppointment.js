@@ -72,12 +72,12 @@ async function initializePage() {
           alert("Appointment updated successfully!");
           window.location.href = "/pages/patientAppointments.html"; // Redirect back to the appointments page
         } else {
-          alert("❌ Failed to update appointment: " + updateResponse.message);
+          alert("Failed to update appointment: " + updateResponse.message);
         }
       });
     })
     .catch(error => {
       console.error("Error fetching doctors:", error);
-      alert("❌ Failed to load doctor data.");
+      alert("Failed to load doctor data.");
     });
 }

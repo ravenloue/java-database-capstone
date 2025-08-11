@@ -12,9 +12,9 @@
         <link rel="icon" href="./assets/images/logo/logo.png">
 
         <!-- stylesheets -->
-        <link rel="stylesheet" href="./assets/css/index.css">
         <link rel="stylesheet" href="./assets/css/style.css">
-
+        <link rel="stylesheet" href="./assets/css/index.css">
+        
         <!-- scripts -->
         <script src="./js/util.js" defer></script>
         <script src="./js/render.js" defer></script>
@@ -24,30 +24,28 @@
     </head>
 
     <body>
-        <main class="main-content">
-            <!-- Container -->
-            <div class="container">
-                <!-- Wrapper -->
-                <div class="wrapper">
-                    <!-- Header -->
-                    <div id="header"></div>
-                    
-                        <h2>Select Your Role</h2>
-                        <button id="admin-btn" class="dashboard-btn" onclick="setRole(Admin)">Admin</button>
-                        <button id="doctor-btn" class="dashboard-btn" onclick="setRole(Doctor)">Doctor</button>
-                        <button id="patient-btn" class="dashboard-btn" onclick="setRole(Patient)">Patient</button>
+        <!-- Container -->
+        <div class="container">
+            <!-- Wrapper -->
+            <div class="wrapper">
+                <!-- Header -->
+                <div id="header"></div>
 
-                    <!-- Footer -->
-                    <div id="footer"></div>
-                </div>
+                <main class="main-content">
+                    <h2>Select Your Role</h2>
+                    <button id="admin-btn" class="dashboard-btn" onclick="setRole('admin')">Admin</button>
+                    <button id="doctor-btn" class="dashboard-btn" onclick="setRole('doctor')">Doctor</button>
+                    <button id="patient-btn" class="dashboard-btn" onclick="setRole('patient')" submit>Patient</button>
+                </main>
+                
+                <!-- Footer -->
+                <div id="footer"></div>
             </div>
-            <!-- Modal -->
-            <div id="modal" class="modal">
-                <button id="closeModal">&times;</button>
-                <div id="modal-body"></div>
-            </div>
-            
-        </main>
+        </div>
+        <!-- Modal -->
+        <div id="modal" class="modal">
+            <button id="closeModal">&times;</button>
+            <div id="modal-body"></div>
+        </div>
     </body>
-
 </html>

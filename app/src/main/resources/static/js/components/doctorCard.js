@@ -11,7 +11,7 @@ export function createDoctorCard(doctor) {
   const infoDiv = document.createElement("div");
   const name = document.createElement("h3");
   const spec = document.createElement("p");
-  const email = doctor.createElement("p");
+  const email = document.createElement("p");
   const avail = document.createElement("p");
 
   // Button container
