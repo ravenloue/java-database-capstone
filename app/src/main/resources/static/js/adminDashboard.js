@@ -2,7 +2,6 @@
 import { openModal } from './components/modals.js';
 import { getDoctors  , filterDoctors , saveDoctor } from './services/doctorServices.js';
 import { createDoctorCard } from './components/doctorCard.js';
-//import './util.js';
 
 
 // Event Listeners
@@ -12,7 +11,7 @@ import { createDoctorCard } from './components/doctorCard.js';
  * Opens the modal dialog for adding a new doctor to the system.
  */
 document.getElementById('addDocBtn').addEventListener('click', () => {
-  openModal('addDoctor');
+  window.openModal('addDoctor');
 });
 
 /**
@@ -148,36 +147,36 @@ export function renderDoctorCards(doctors) {
  * @function adminAddDoctor
  */
 window.adminAddDoctor = async function() {
-  const name = document.getElementById('doctorName').value;
-        const specialty = document.getElementById('specialization').value;
-        const email = document.getElementById('doctorEmail').value;
-        const password = document.getElementById('doctorPassword').value;
-        const phone = document.getElementById('doctorPhone').value;
-        const checkboxes = document.querySelectorAll('input[name="availability"]:checked');
-        const availableTimes = Array.from(checkboxes).map(cb => cb.value);
-  
-        const token = localStorage.getItem("token");
-        if (!token) {
-          alert("Token expired or not found. Please log in again.");
-          return;
-        }
-  
-        const doctor = {
-          name,
-          specialty,
-          email,
-          password,
-          phone,
-          availableTimes
-        };
-  
-        const { success, message } = await saveDoctor(doctor, token);
-  
-        if (success) {
-          alert(message);
-          document.getElementById("modal").style.display = "none";
-          window.location.reload();
-        } else {
-          alert("Error: " + message);
-        }
+    const name = document.getElementById('doctorName').value;
+    const specialty = document.getElementById('specialization').value;
+    const email = document.getElementById('doctorEmail').value;
+    const password = document.getElementById('doctorPassword').value;
+    const phone = document.getElementById('doctorPhone').value;
+    const checkboxes = document.querySelectorAll('input[name="availability"]:checked');
+    const availableTimes = Array.from(checkboxes).map(cb => cb.value);
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Token expired or not found. Please log in again.");
+        return;
+    }
+
+    const doctor = {
+        name,
+        specialty,
+        email,
+        password,
+        phone,
+        availableTimes
+    };
+
+    const { success, message } = await saveDoctor(doctor, token);
+
+    if (success) {
+        alert(message);
+        document.getElementById("modal").style.display = "none";
+        window.location.reload();
+    } else {
+        alert("Error: " + message);
+    }
 }

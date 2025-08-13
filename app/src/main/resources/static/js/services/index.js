@@ -12,13 +12,11 @@ window.onload = function () {
 
     if (adminBtn) {
         adminBtn.addEventListener("click", () => {
-            console.log("admin clicked")
             openModal("adminLogin");
         });
     }
     if (doctorBtn) {
         doctorBtn.addEventListener("click", () => {
-            console.log("doctor clicked")
             openModal("doctorLogin");
         });
     }
