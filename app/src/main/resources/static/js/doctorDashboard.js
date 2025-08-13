@@ -7,26 +7,57 @@ let selectedDate = new Date().toISOString().split('T')[0];
 let token = localStorage.getItem("token");
 let patientName = null;
 
-// Event listeners
+// Event Listeners Section
+
+/** 
+ * Search Bar Input Handler
+ * 
+ * Filters appointments by patient name. Clears filter when input is empty.
+ * Triggers loadAppointments() on each input change for live filtering.
+ */
 document.getElementById("searchBar").addEventListener("input", (e) => {
   const value = e.target.value.trim();
   patientName = value.length > 0 ? value : null;
   loadAppointments();
 });
+
+/**
+ * Today Button Click Handler
+ * 
+ * Resets the date picker to current date and reloads appointments. Updates
+ * both the selectedDate variable and the date picker UI element.
+ */
 document.getElementById("todayButton").addEventListener("click", () => {
   selectedDate = new Date().toISOString().split('T')[0];
   document.getElementById("datePicker").value = selectedDate;
   loadAppointments();
 });
+
+/**
+ * Date Picker Change Handler
+ * 
+ * Updates selectedDate when user selects a new date from the picker.
+ * Automatically refreshes the appointment list for the selected date.
+ */
 document.getElementById("datePicker").addEventListener("change", (e) => {
   selectedDate = e.target.value;
   loadAppointments();
 });
 
-/*
- * Fetches the appointment data for the currently selected patient
+/**
+ * Loads appointments from API and populates the table.
+ * 
+ * Fetches appointments using current filters (date and optional patient
+ * name). Handles empty results and errors gracefully with user-friendly
+ * messages. Creates table rows for each appointment with patient details.
+ * 
+ * API expects: date (YYYY-MM-DD), patientName (string or "null"), token
+ * 
+ * @async
+ * @returns {Promise<void>} Completes when table is populated or error shown
  */
 async function loadAppointments() {
+
   try {
     const response = await getAllAppointments(selectedDate, patientName, token);
     const appointments = response.appointments || [];
@@ -34,10 +65,10 @@ async function loadAppointments() {
     tableBody.innerHTML = "";
 
     if (appointments.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="5">No Appointments found for today.</td></tr>`;
+      const formattedDate = new Date(selectedDate).toLocaleDateString();
+      tableBody.innerHTML = `<tr><td colspan="5">No appointments found for ${formattedDate}.</td></tr>`;
       return;
     }
-    console.log(appointments)
     appointments.forEach(appointment => {
       const patient = {
         id: appointment.patientId,
@@ -45,7 +76,6 @@ async function loadAppointments() {
         phone: appointment.patientPhone,
         email: appointment.patientEmail,
       };
-      console.log(appointment.doctorId)
       const row = createPatientRow(patient,appointment.id,appointment.doctorId);
       tableBody.appendChild(row);
     });
@@ -55,8 +85,12 @@ async function loadAppointments() {
   }
 }
 
-/*
- * Renders the page
+/**
+ * DOM Content Loaded Event Listener
+ * 
+ * Initializes the dashboard when page loads. Sets date picker to current date,
+ * renders page content, and loads initial appointment list. Ensures all DOM
+ * elements are available before attempting to access them.
  */
 window.addEventListener("DOMContentLoaded", () => {
   renderContent();

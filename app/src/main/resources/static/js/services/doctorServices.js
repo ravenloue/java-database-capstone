@@ -3,8 +3,15 @@ import { API_BASE_URL } from "../config/config.js";
 
 const DOCTOR_API = API_BASE_URL + "/doctor";
 
-/* 
- * Get all doctors
+/**
+ * Fetches all doctors from the API.
+ * 
+ * Makes GET request to doctor endpoint without authentication. Returns
+ * array of doctor objects or empty array on error. Used for public
+ * doctor listing on admin dashboard.
+ * 
+ * @async
+ * @returns {Promise<Array>} Array of doctor objects
  */
 export async function getDoctors() {
     try {
@@ -17,48 +24,74 @@ export async function getDoctors() {
     }
   }
 
-  /*
-   * Delete a doctor
-   */
-  export async function deleteDoctor(id, token) {
+/**
+ * Deletes a doctor by ID with admin authentication.
+ * 
+ * Sends DELETE request with doctor ID and admin token. Returns success
+ * status and message for UI feedback. Requires valid admin token for
+ * authorization.
+ * 
+ * @async
+ * @param {number} id - Doctor ID to delete
+ * @param {string} token - Admin JWT token for authentication
+ * @returns {Promise<Object>} Object with success boolean and message
+ */
+export async function deleteDoctor(id, token) {
     try {
-      const response = await fetch(`${DOCTOR_API}/${id}/${token}`, 
-      {
-        method: "DELETE",
-      });
-  
-      const result = await response.json();
-      return { success: response.ok, message: result.message };
+        const response = await fetch(`${DOCTOR_API}/${id}/${token}`, 
+        { method: "DELETE", });
+
+        const result = await response.json();
+        return { success: response.ok, message: result.message };
     } catch (error) {
-      console.error("Error deleting doctor: ", error);
-      return { success: false, message: "Server error" };
+        console.error("Error deleting doctor: ", error);
+        return { success: false, message: "Server error" };
     }
-  }
+}
 
-  /*
-   * Add a new doctor
-   */
-  export async function saveDoctor(doctor, token){
-    try {
-      const response = await fetch(`${DOCTOR_API}/${token}`, 
-      {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body:JSON.stringify(doctor)
-      });
-      const result = await response.json();
-      return {success: response.ok , message: result.message}
+/**
+ * Creates a new doctor account with admin privileges.
+ * 
+ * Posts doctor data including credentials and availability. Validates
+ * admin token before processing. Returns operation status and message
+ * for user feedback.
+ * 
+ * @async
+ * @param {Object} doctor - Doctor object with all required fields
+ * @param {string} token - Admin JWT token for authentication
+ * @returns {Promise<Object>} Object with success boolean and message
+ */
+export async function saveDoctor(doctor, token){
+  try {
+    const response = await fetch(`${DOCTOR_API}/${token}`, 
+    {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body:JSON.stringify(doctor)
+    });
+    const result = await response.json();
+    return {success: response.ok , message: result.message}
     }
-    catch(error) {
-      console.error("Error saving doctor: ", error);
-      return { success: false, message: result.message }
-    }
+  catch(error) {
+    console.error("Error saving doctor: ", error);
+    return { success: false, message: result.message }
   }
+}
 
-  /*
-   * Filter the doctor's list
-   */
-  export async function filterDoctors(name, time, specialty) {
+/**
+ * Filters doctors by multiple criteria.
+ * 
+ * Applies name search (partial match), time availability, and specialty
+ * filters. Sends "null" string for empty filters to backend. Returns
+ * filtered doctor list or empty array on error.
+ * 
+ * @async
+ * @param {string|null} name - Doctor name to search (partial match)
+ * @param {string|null} time - Available time slot filter
+ * @param {string|null} specialty - Medical specialty filter
+ * @returns {Promise<Object>} Object containing doctors array
+ */
+export async function filterDoctors(name, time, specialty) {
     try {
       const response = await fetch(`${DOCTOR_API}/filter/${name}/${time}/${specialty}`, 
       {
@@ -80,4 +113,4 @@ export async function getDoctors() {
       alert("Something went wrong!");
       return { doctors: [] }; 
     }
-  }
+}

@@ -6,21 +6,61 @@ import { createDoctorCard } from './components/doctorCard.js';
 
 
 // Event Listeners
+/** 
+ * Add Doctor Button Click Handler
+ * 
+ * Opens the modal dialog for adding a new doctor to the system.
+ */
 document.getElementById('addDocBtn').addEventListener('click', () => {
   openModal('addDoctor');
 });
+
+/**
+ * DOM Content Loaded Handler
+ * 
+ * Initializes the admin dashboard by loading all doctor cards when the
+ * page is fully loaded and DOM elements are ready.
+ */
 document.addEventListener("DOMContentLoaded", () => {
   loadDoctorCards();
 });
+
+/**
+ * Search Bar Input Handler
+ * 
+ * Implements debounced search with 300ms delay to prevent excessive API
+ * calls while user types. Triggers doctor filtering on each input change.
+ */
 document.getElementById("searchBar").addEventListener(
     "input", debounce(filterDoctorsOnChange, 300));
+
+/**
+ * Time Filter Change Handler
+ * 
+ * Triggers doctor filtering when user selects a different time slot from
+ * the dropdown. Works in combination with other active filters.
+ */
 document.getElementById("filterTime").addEventListener(
     "change", filterDoctorsOnChange);
+
+/**
+ * Specialty Filter Change Handler
+ * 
+ * Triggers doctor filtering when user selects a different medical
+ * specialty. Combines with search and time filters for refined results.
+ */
 document.getElementById("filterSpecialty").addEventListener(
     "change", filterDoctorsOnChange);
 
-/*
- * Load doctor cards on page load
+/**
+ * Loads all doctor cards from the API and renders them.
+ * 
+ * Fetches the complete doctor list on initial page load. Creates card
+ * elements for each doctor and appends to content area. Logs errors
+ * to console if the fetch operation fails.
+ * 
+ * @export
+ * @function loadDoctorCards
  */
 export function loadDoctorCards() {
   getDoctors()
@@ -38,8 +78,12 @@ export function loadDoctorCards() {
     });
 }
 
-/*
- * Gathers search and filter values and filters doctors
+/**
+ * Filters doctors based on search and dropdown selections.
+ * 
+ * Collects values from search bar, time filter, and specialty filter.
+ * Sends null for empty filters to get all results. Updates UI with
+ * filtered results or shows "no doctors found" message.
  */
 function filterDoctorsOnChange() {
   const searchBar = document.getElementById("searchBar").value.trim(); 
@@ -71,8 +115,15 @@ function filterDoctorsOnChange() {
     });
 }
 
-/*
- * Utility function to render doctor cards
+/**
+ * Renders an array of doctors as cards in the UI.
+ * 
+ * Utility function that clears the content area and populates it with
+ * doctor cards. Used by both initial load and filter operations to
+ * maintain consistent rendering logic.
+ * 
+ * @export
+ * @param {Array} doctors - Array of doctor objects to render
  */
 export function renderDoctorCards(doctors) {
   const contentDiv = document.getElementById("content");
@@ -84,8 +135,17 @@ export function renderDoctorCards(doctors) {
       });
 }
 
-/*
- * Handles the modal for adding a doctor
+/**
+ * Handles the doctor addition form submission from modal.
+ * 
+ * Collects form data including name, specialty, credentials, and available
+ * times. Validates token presence before submission. Shows success/error
+ * alerts and refreshes page on successful addition. Global function for
+ * modal access.
+ * 
+ * @async
+ * @global
+ * @function adminAddDoctor
  */
 window.adminAddDoctor = async function() {
   const name = document.getElementById('doctorName').value;

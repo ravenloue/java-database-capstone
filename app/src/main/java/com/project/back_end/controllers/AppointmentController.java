@@ -17,8 +17,15 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * REST controller for appointment management endpoints.
+ * 
+ * Provides HTTP endpoints for appointment CRUD operations. Validates
+ * authentication tokens and delegates business logic to service layer.
+ * Returns standardized JSON responses with appropriate HTTP status codes.
+ */
 @RestController
-@RequestMapping("/appointments")
+@RequestMapping("${api.path}"+"appointments")
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -30,22 +37,46 @@ public class AppointmentController {
         this.service = service;
     }
 
+    /**
+     * GET endpoint to retrieve appointments for a specific date.
+     * 
+     * Validates doctor token before processing. Filters appointments by date
+     * and optionally by patient name. Returns list of appointments or error
+     * message if token validation fails.
+     * 
+     * @param date ISO format date (YYYY-MM-DD) to filter appointments
+     * @param patientName Patient name for filtering or "null" for all
+     * @param token JWT token for doctor authentication
+     * @return ResponseEntity with appointments list or error message
+     */
     @GetMapping("/{date}/{patientName}/{token}")
     public ResponseEntity<Map <String,Object>> getAppointments(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
             @PathVariable String patientName,@PathVariable String token) {
         Map<String, Object> map = new HashMap<>();
-        ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, "doctor");
-        if (!tempMap.getBody().isEmpty()) {
-            map.putAll(tempMap.getBody());
+        ResponseEntity<Map<String,String>> tempMap = service.validateToken(token, "doctor");
+        Map<String,String> tempBody = tempMap.getBody();
+        if (tempMap.getStatusCode() != HttpStatus.OK ||
+                (tempBody != null && tempBody.containsKey("error"))) {
+            if (tempBody != null) map.putAll(tempBody);
             return new ResponseEntity<>(map, tempMap.getStatusCode());
         }
 
-        map=appointmentService.getAppointment(patientName, date, token);
-        return ResponseEntity.status(HttpStatus.OK).body(map);
+        map = appointmentService.getAppointment(patientName, date, token);
+        return ResponseEntity.ok(map);
     }
     
-
+    /**
+     * POST endpoint to book a new appointment.
+     * 
+     * Validates patient token and appointment data. Checks doctor availability
+     * and time conflicts before booking. Returns 201 Created on success or
+     * appropriate error status with descriptive message.
+     * 
+     * @param appointment Appointment details in request body
+     * @param token JWT token for patient authentication
+     * @return ResponseEntity with booking status and message
+     */
     @PostMapping("/{token}")
     public ResponseEntity<Map<String, String>> bookAppointment(@RequestBody @Valid Appointment appointment,
             @PathVariable String token) {
@@ -74,6 +105,16 @@ public class AppointmentController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    /**
+     * PUT endpoint to update existing appointment.
+     * 
+     * Validates patient token matches appointment owner. Allows rescheduling
+     * or updating appointment details. Checks new time slot availability.
+     * 
+     * @param token JWT token for patient authentication
+     * @param appointment Updated appointment data with ID
+     * @return ResponseEntity with update status and message
+     */
     @PutMapping("/{token}")
     public ResponseEntity<Map<String, String>> updateAppointment(@PathVariable String token, @RequestBody @Valid Appointment appointment) {
         ResponseEntity<Map<String, String>> tempMap = service.validateToken(token, "patient");
@@ -82,6 +123,17 @@ public class AppointmentController {
         return appointmentService.updateAppointment(appointment);   
     }
 
+    /**
+     * DELETE endpoint to cancel an appointment.
+     * 
+     * Validates patient token and verifies appointment ownership. Removes
+     * appointment from database if validation passes. Returns appropriate
+     * status based on operation result.
+     * 
+     * @param id Appointment ID to cancel
+     * @param token JWT token for patient authentication
+     * @return ResponseEntity with cancellation status and message
+     */
     @DeleteMapping("/{id}/{token}")
     public ResponseEntity<Map<String, String>>  cancelAppointment(@PathVariable Long id, @PathVariable String token) {
         ResponseEntity<Map<String, String>> tempMap = service.validateToken(token, "patient");

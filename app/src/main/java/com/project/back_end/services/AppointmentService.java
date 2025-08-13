@@ -19,6 +19,13 @@ import com.project.back_end.repo.DoctorRepository;
 import com.project.back_end.repo.PatientRepository;
 import jakarta.transaction.Transactional;
 
+/**
+ * Service class for managing appointment operations.
+ * 
+ * Handles appointment booking, updates, cancellations, and retrieval. 
+ * Integrates with repositories for data persistence and token service
+ * for authentication. Provides business logic validation for appointments.
+ */
 @Service
 public class AppointmentService {
 
@@ -38,6 +45,15 @@ public class AppointmentService {
         this.doctorRepository = doctorRepository;
     }
 
+     /**
+     * Books a new appointment in the system.
+     * 
+     * Persists appointment data to database. Returns success/failure status
+     * for operation. Logs any exceptions that occur during save operation.
+     * 
+     * @param appointment Appointment entity with patient, doctor, and time
+     * @return 1 for success, 0 for failure
+     */
     public int bookAppointment(Appointment appointment) {
         try {
             appointmentRepository.save(appointment);
@@ -48,6 +64,16 @@ public class AppointmentService {
         }
     }
 
+    /**
+     * Updates existing appointment details.
+     * 
+     * Validates appointment exists and patient ID matches before updating.
+     * Checks doctor availability and time conflicts. Returns appropriate
+     * HTTP response with status message.
+     * 
+     * @param appointment Updated appointment data including ID
+     * @return ResponseEntity with status code and message
+     */
     public ResponseEntity<Map<String, String>> updateAppointment(Appointment appointment) {
         Map<String, String> response = new HashMap<>();
         Optional<Appointment> result = appointmentRepository.findById(appointment.getId());
@@ -81,6 +107,17 @@ public class AppointmentService {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    /**
+     * Cancels appointment by ID with patient verification.
+     * 
+     * Extracts patient from token and verifies ownership before deletion.
+     * Ensures only the patient who booked can cancel their appointment.
+     * Returns appropriate status based on operation result.
+     * 
+     * @param id Appointment ID to cancel
+     * @param token JWT token for patient authentication
+     * @return ResponseEntity with deletion status and message
+     */
     public ResponseEntity<Map<String, String>> cancelAppointment(long id, String token) {
         Map<String, String> response = new HashMap<>();
         Optional<Appointment> appointment = appointmentRepository.findById(id);
@@ -106,6 +143,18 @@ public class AppointmentService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    /**
+     * Retrieves appointments for a doctor filtered by date and patient name.
+     * 
+     * Extracts doctor ID from token for security. Filters appointments by
+     * date range (full day). Optional patient name filter with partial match.
+     * Returns DTOs with patient details for display.
+     * 
+     * @param pname Patient name filter or "null" for all patients
+     * @param date Date to filter appointments (uses full day range)
+     * @param token JWT token containing doctor email
+     * @return Map containing list of appointment DTOs
+     */
     @Transactional
     public Map<String, Object> getAppointment(String pname, LocalDate date, String token) {
         Map<String, Object> map = new HashMap<>();
@@ -142,6 +191,14 @@ public class AppointmentService {
         return map;
     }
 
+    /**
+     * Updates appointment status to completed.
+     * 
+     * Changes status from 0 (pending) to 1 (completed) for given appointment.
+     * Used when doctor marks appointment as finished.
+     * 
+     * @param appointmentId ID of appointment to update
+     */
     @Transactional
     public void changeStatus(long appointmentId)
     {
