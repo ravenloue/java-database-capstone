@@ -36,7 +36,7 @@ public class Doctor {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Pattern(regexp = "^[0-9]{10}$")
+    @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}$")
     private String phone;
 
     @ElementCollection

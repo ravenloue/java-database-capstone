@@ -3,7 +3,6 @@ import { openModal } from './components/modals.js';
 import { getDoctors  , filterDoctors , saveDoctor } from './services/doctorServices.js';
 import { createDoctorCard } from './components/doctorCard.js';
 
-
 // Event Listeners
 /** 
  * Add Doctor Button Click Handler
@@ -11,7 +10,7 @@ import { createDoctorCard } from './components/doctorCard.js';
  * Opens the modal dialog for adding a new doctor to the system.
  */
 document.getElementById('addDocBtn').addEventListener('click', () => {
-  window.openModal('addDoctor');
+  openModal('addDoctor');
 });
 
 /**
@@ -99,7 +98,6 @@ function filterDoctorsOnChange() {
       contentDiv.innerHTML = ""; 
 
       if (doctors.length > 0) {
-        console.log(doctors);
         doctors.forEach(doctor => {
           const card = createDoctorCard(doctor);
           contentDiv.appendChild(card);
@@ -169,12 +167,11 @@ window.adminAddDoctor = async function() {
         phone,
         availableTimes
     };
-
+    
     const { success, message } = await saveDoctor(doctor, token);
 
     if (success) {
-        alert(message);
-        document.getElementById("modal").style.display = "none";
+        document.getElementById("modal").style.visibility = "hidden";
         window.location.reload();
     } else {
         alert("Error: " + message);

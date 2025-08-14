@@ -46,6 +46,7 @@ button {
   color: white;
   border: none;
   border-radius: 12px;
+  padding: 10px 20px;
   margin-top: 20px;
   width: 200px;
   cursor: pointer;
@@ -67,5 +68,6 @@ button:hover {
 }
 
 .adminBtn:hover {
-  color: #a62b1f;
+  background-color: #a62b1f;
+  color: white;
 }

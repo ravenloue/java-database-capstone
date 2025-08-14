@@ -1,13 +1,20 @@
 // header.js
 
-/*
- * Renders the header depending on the user role and authentication status 
+/**
+ * Renders the header based on user role and authentication status
+ * 
+ * Checks localStorage for user role and token to determine which header
+ * variation to display. Handles different layouts for public pages,
+ * admin dashboard, doctor dashboard, and patient portals.
+ * 
+ * @function renderHeader
  */
 function renderHeader() {
   const headerDiv = document.getElementById("header");
   const role = localStorage.getItem("userRole");
   const token = localStorage.getItem("token");
 
+  // Special case: homepage gets minimal header with just logo
   if (window.location.pathname.endsWith("/")) {
     localStorage.removeItem("userRole")
     headerDiv.innerHTML = `
@@ -22,6 +29,7 @@ function renderHeader() {
     return;
   }
 
+  // Build base header structure with logo
   let headerContent = `
     <header class="header">
       <div class="logo-section">
@@ -30,24 +38,29 @@ function renderHeader() {
       </div>
       <nav>`;
   
+  // Validate authenticated users have valid tokens
   if ((role === "loggedPatient" || role === "admin" || role === "doctor") && !token) {
     localStorage.removeItem("userRole");
     alert("Session expired or invalid login. Please log in again.");
     window.location.href = "/";
     return;
   } else if (role === "admin") {
+    // Admin header: Add Doctor button and logout
     headerContent += `
-           <button id="addDocBtn" class="adminBtn" onclick="openModal('addDoctor')">Add Doctor</button>
+           <button id="addDocBtn" class="adminBtn">Add Doctor</button>
            <a href="#" onclick="logout()">Logout</a>`;
   } else if (role === "doctor") {
+    // Doctor header: Home button and logout
     headerContent += `
            <button class="adminBtn"  onclick="selectRole('doctor')">Home</button>
            <a href="#" onclick="logout()">Logout</a>`;
   } else if (role === "patient") {
+    // Non-logged patient: Login and signup options
     headerContent += `
            <button id="patientLogin" class="adminBtn">Login</button>
            <button id="patientSignup" class="adminBtn">Sign Up</button>`;
   } else if (role === "loggedPatient") {
+    // Logged-in patient: Home, appointments, and logout
     headerContent += `
            <button id="home" class="adminBtn" onclick="window.location.href='/pages/loggedPatientDashboard.html'">Home</button>
            <button id="patientAppointments" class="adminBtn" onclick="window.location.href='/pages/patientAppointments.html'">Appointments</button>
@@ -60,13 +73,21 @@ function renderHeader() {
   attachHeaderButtonListeners();
 }
 
-/*
- * Attaches listeners to the dynamically created header buttons
+/**
+ * Attaches event listeners to dynamically created header buttons
+ * 
+ * Sets up click handlers for doctor and admin login buttons that appear
+ * in certain header configurations. Clears any existing tokens before
+ * showing login modals to ensure clean authentication flow.
+ * 
+ * @function attachHeaderButtonListeners
  */
 function attachHeaderButtonListeners() {
   const doctorBtn = document.getElementById("doctorBtn");
   const adminBtn = document.getElementById("adminBtn");
+  const addDocBtn = document.getElementById("addDocBtn");
   
+  // Doctor login button handler
   if (doctorBtn) {
     doctorBtn.addEventListener("click", () => {
       localStorage.removeItem("token");
@@ -74,6 +95,7 @@ function attachHeaderButtonListeners() {
     });
   }
 
+  // Admin login button handler
   if (adminBtn) {
     adminBtn.addEventListener("click", () => {
       localStorage.removeItem("token");
@@ -82,8 +104,13 @@ function attachHeaderButtonListeners() {
   }
 }
 
-/*
- * Simple logout and redirect function
+/**
+ * Logs out the current user and redirects to homepage
+ * 
+ * Clears authentication token and user role from localStorage, then
+ * redirects to the application root. Used for admin and doctor logout.
+ * 
+ * @function logout
  */
 function logout() {
   localStorage.removeItem("token");
@@ -91,8 +118,14 @@ function logout() {
   window.location.href = "/";
 }
 
-/*
- * Logs patient out and redirects to patient dashboard
+/**
+ * Logs out patient user and redirects to patient dashboard
+ * 
+ * Specialized logout for patient users that clears credentials but
+ * redirects to the public patient dashboard instead of homepage.
+ * Sets role back to 'patient' for appropriate header rendering.
+ * 
+ * @function logoutPatient
  */
 function logoutPatient() {
   localStorage.removeItem("token");
@@ -100,4 +133,5 @@ function logoutPatient() {
   window.location.href = "/pages/patientDashboard.html";
 }
 
+// Initialize header on page load
 renderHeader();

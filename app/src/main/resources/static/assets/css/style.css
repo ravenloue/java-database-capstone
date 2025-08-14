@@ -163,7 +163,7 @@
   
 
   .modal {
-    display: none;
+    visibility: hidden;
     position: fixed;
     z-index: 999;
     padding-top: 60px;

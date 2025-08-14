@@ -96,13 +96,13 @@ public class DoctorController {
             @PathVariable String token) {
         Map<String, String> response = new HashMap<>();
         ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, "admin");
-        if (!tempMap.getBody().isEmpty()) return tempMap;
+        if (tempMap.getBody().isEmpty()) return tempMap;
 
-        int res =doctorService.saveDoctor(doctor);
-        if (res==1) {
+        int res = doctorService.saveDoctor(doctor);
+        if (res == 1) {
             response.put("message", "Doctor added to db");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } else if(res==-1) {
+        } else if(res ==-1) {
             response.put("message", "Doctor already exists");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }

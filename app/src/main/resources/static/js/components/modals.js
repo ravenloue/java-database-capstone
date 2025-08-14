@@ -1,7 +1,24 @@
 // modals.js
+
+/**
+ * Opens a modal dialog with content specific to the requested type.
+ * 
+ * Dynamically generates HTML content for different modal types including
+ * patient login/signup, admin/doctor login, and add doctor forms. Sets
+ * up event listeners for form submissions and close button. Modal types
+ * supported: addDoctor, patientLogin, patientSignup, adminLogin,
+ * doctorLogin.
+ * 
+ * @export
+ * @param {string} type - The type of modal to display
+ * @throws {Error} Will throw error if modal-body element not found
+ */
 export function openModal(type) {
   let modalContent = '';
+
+  // Generate modal content based on type parameter
   if (type === 'addDoctor') {
+    // Administrator form for adding new doctors to the system
     modalContent = `
          <h2>Add Doctor</h2>
          <input type="text" id="doctorName" placeholder="Doctor Name" class="input-field">
@@ -38,14 +55,15 @@ export function openModal(type) {
         <button class="dashboard-btn" id="saveDoctorBtn">Save</button>
       `;
   } else if (type === 'patientLogin') {
+    // Patient authentication form
     modalContent = `
         <h2>Patient Login</h2>
         <input type="text" id="email" placeholder="Email" class="input-field">
         <input type="password" id="password" placeholder="Password" class="input-field">
         <button class="dashboard-btn" id="loginBtn">Login</button>
       `;
-  }
-  else if (type === "patientSignup") {
+  } else if (type === "patientSignup") {
+    // New patient registration form
     modalContent = `
       <h2>Patient Signup</h2>
       <input type="text" id="name" placeholder="Name" class="input-field">
@@ -57,6 +75,7 @@ export function openModal(type) {
     `;
 
   } else if (type === 'adminLogin') {
+    // Administrator authentication form
     modalContent = `
         <h2>Admin Login</h2>
         <input type="text" id="username" name="username" placeholder="Username" class="input-field">
@@ -64,6 +83,7 @@ export function openModal(type) {
         <button class="dashboard-btn" id="adminLoginBtn" >Login</button>
       `;
   } else if (type === 'doctorLogin') {
+    // Doctor authentication form
     modalContent = `
         <h2>Doctor Login</h2>
         <input type="text" id="email" placeholder="Email" class="input-field">
@@ -72,6 +92,12 @@ export function openModal(type) {
       `;
   }
 
+   /**
+   * Modal Display and Close Handler
+   * 
+   * Injects generated content into modal body and makes modal visible.
+   * Attaches click handler to close button for hiding modal.
+   */
   document.getElementById('modal-body').innerHTML = modalContent;
   document.getElementById('modal').style.visibility = 'visible';
 
@@ -79,6 +105,13 @@ export function openModal(type) {
     document.getElementById('modal').style.visibility = 'hidden';
   };
 
+  /**
+   * Event Handler Attachments
+   * 
+   * Connects form submission buttons to their respective handler
+   * functions based on modal type. Handlers are defined in respective
+   * modules (patientServices, adminDashboard, etc.).
+   */
   if (type === "patientSignup") {
     document.getElementById("signupBtn").addEventListener("click", signupPatient);
   }
