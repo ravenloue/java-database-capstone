@@ -102,7 +102,7 @@ public class DoctorController {
         if (res == 1) {
             response.put("message", "Doctor added to db");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } else if(res ==-1) {
+        } else if(res == -1) {
             response.put("message", "Doctor already exists");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         }
@@ -141,13 +141,13 @@ public class DoctorController {
             @PathVariable String token) {
         Map<String, String> response = new HashMap<>();
         ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, "admin");
-        if (!tempMap.getBody().isEmpty()) return tempMap;
+        if (tempMap.getBody().isEmpty()) return tempMap;
     
-        int res =doctorService.updateDoctor(doctor);
-        if (res==1) {
+        int res = doctorService.updateDoctor(doctor);
+        if (res == 1) {
             response.put("message", "Doctor updated");
             return ResponseEntity.status(HttpStatus.OK).body(response);
-        } else if(res==-1) {
+        } else if(res == -1) {
             response.put("message", "Doctor not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
@@ -171,13 +171,13 @@ public class DoctorController {
             @PathVariable String token) {
         Map<String, String> response = new HashMap<>();
         ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, "admin");
-        if (!tempMap.getBody().isEmpty()) return tempMap;
+        if (tempMap.getBody().isEmpty()) return tempMap;
 
-        int res=doctorService.deleteDoctor(id);
-        if (res==1) {
+        int res = doctorService.deleteDoctor(id);
+        if (res == 1) {
             response.put("message", "Doctor deleted successfull with id: "+id);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } else if(res==-1) {
+        } else if(res ==-1) {
             response.put("message", "Doctor not found with id: "+id);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
