@@ -30,7 +30,7 @@ public class Patient {
     private String password;
 
     @NotNull(message = "phone must not be null")
-    @Pattern(regexp = "^[0-9]{10}$")
+    @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}$")
     private String phone;
 
     @NotNull(message = "address must not be null")

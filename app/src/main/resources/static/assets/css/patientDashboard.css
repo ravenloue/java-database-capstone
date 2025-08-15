@@ -44,10 +44,6 @@
   text-align: center;
 }
 
-.modalApp.active {
-  bottom: 0;
-}
-
 .modalApp h2 {
   margin-top: 20px;
 }

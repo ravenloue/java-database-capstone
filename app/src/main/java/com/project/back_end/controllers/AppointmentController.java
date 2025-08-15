@@ -82,7 +82,7 @@ public class AppointmentController {
             @PathVariable String token) {
 
         ResponseEntity<Map<String, String>> tempMap = service.validateToken(token, "patient");
-        if (!tempMap.getBody().isEmpty()) {
+        if (tempMap.getBody().isEmpty()) {
             return tempMap;
         }
 
@@ -118,7 +118,7 @@ public class AppointmentController {
     @PutMapping("/{token}")
     public ResponseEntity<Map<String, String>> updateAppointment(@PathVariable String token, @RequestBody @Valid Appointment appointment) {
         ResponseEntity<Map<String, String>> tempMap = service.validateToken(token, "patient");
-        if (!tempMap.getBody().isEmpty()) return tempMap;
+        if (tempMap.getBody().isEmpty()) return tempMap;
 
         return appointmentService.updateAppointment(appointment);   
     }
@@ -137,7 +137,7 @@ public class AppointmentController {
     @DeleteMapping("/{id}/{token}")
     public ResponseEntity<Map<String, String>>  cancelAppointment(@PathVariable Long id, @PathVariable String token) {
         ResponseEntity<Map<String, String>> tempMap = service.validateToken(token, "patient");
-        if (!tempMap.getBody().isEmpty()) return tempMap;
+        if (tempMap.getBody().isEmpty()) return tempMap;
 
         return appointmentService.cancelAppointment(id,token);
     }

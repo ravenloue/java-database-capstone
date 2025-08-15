@@ -32,14 +32,14 @@ public class PrescriptionController {
             Service service,AppointmentService appointmentService) {
         this.prescriptionService = prescriptionService;
         this.service = service;
-        this.appointmentService=appointmentService;
+        this.appointmentService = appointmentService;
     }
 
     @PostMapping("/{token}")
     public ResponseEntity<Map<String, String>> savePrescription(
             @PathVariable String token, @RequestBody @Valid Prescription prescription) {
         ResponseEntity<Map<String, String>> tempMap = service.validateToken(token, "doctor");
-        if (!tempMap.getBody().isEmpty()) return tempMap;
+        if (tempMap.getBody().isEmpty()) return tempMap;
 
         appointmentService.changeStatus(prescription.getApptId());
         return prescriptionService.savePrescription(prescription);
@@ -50,7 +50,7 @@ public class PrescriptionController {
         @PathVariable Long appointmentId,@PathVariable String token) {
         Map<String, Object> map = new HashMap<>();
         ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, "doctor");
-        if (!tempMap.getBody().isEmpty()) {
+        if (tempMap.getBody().isEmpty()) {
             map.putAll(tempMap.getBody());
             return new ResponseEntity<>(map, tempMap.getStatusCode());
         }

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Future;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @Entity
@@ -77,6 +78,7 @@ public class Appointment {
         return patient;
     }
 
+    @JsonProperty("appointmentTime")
     public LocalDateTime getApptTime() {
         return appointmentTime;
     }
@@ -98,6 +100,7 @@ public class Appointment {
         this.patient = patient;
     }
 
+    @JsonProperty("appointmentTime")
     public void setApptTime(LocalDateTime appointmentTime) {
         this.appointmentTime = appointmentTime;
     }

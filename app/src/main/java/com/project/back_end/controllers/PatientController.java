@@ -25,7 +25,7 @@ public class PatientController {
     @Autowired
     public PatientController(PatientService patientService,Service service) {
         this.patientService = patientService;
-        this.service=service;
+        this.service = service;
     }
 
     @GetMapping("/{token}")
@@ -41,14 +41,14 @@ public class PatientController {
 
     @PostMapping()
     public ResponseEntity<Map<String, String>> createPatient(@RequestBody @Valid Patient patient) {
-        Map<String,String> map=new HashMap<>();
+        Map<String,String> map = new HashMap<>();
         if (service.validatePatient(patient)) {
-            int res=patientService.createPatient(patient);
-            if(res==1) {
+            int res = patientService.createPatient(patient);
+            if(res == 1) {
                 map.put("message","Signup successfull");
                 return ResponseEntity.status(HttpStatus.CREATED).body(map); // 201 Created
             }
-            if (res==0) {
+            if (res == 0) {
                 map.put("message","Internal server error");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(map);
             }
@@ -68,7 +68,7 @@ public class PatientController {
             @PathVariable String token, @PathVariable String user) {
         Map<String, Object> map = new HashMap<>();
         ResponseEntity<Map<String,String>> tempMap = service.validateToken(token, user);
-        if (!tempMap.getBody().isEmpty()) {
+        if (tempMap.getBody().isEmpty()) {
             map.putAll(tempMap.getBody());
             return new ResponseEntity<>(map, tempMap.getStatusCode());
         }
@@ -80,8 +80,8 @@ public class PatientController {
     public ResponseEntity<Map<String,Object>> filterPatientAppointment(
             @PathVariable String condition, @PathVariable String name, @PathVariable String token) {
         Map<String, Object> map = new HashMap<>();
-        ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, "patient");
-        if (!tempMap.getBody().isEmpty()) {
+        ResponseEntity<Map<String,String>> tempMap = service.validateToken(token, "patient");
+        if (tempMap.getBody().isEmpty()) {
             map.putAll(tempMap.getBody());
             return new ResponseEntity<>(map, tempMap.getStatusCode());
         }

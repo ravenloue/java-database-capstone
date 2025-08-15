@@ -55,7 +55,7 @@ public class DoctorController {
             @PathVariable String token) {
         Map<String, Object> map = new HashMap<>();
         ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, user);
-        if (!tempMap.getBody().isEmpty()) {
+        if (tempMap.getBody().isEmpty()) {
             map.putAll(tempMap.getBody());
             return new ResponseEntity<>(map, tempMap.getStatusCode());
         }
@@ -74,7 +74,7 @@ public class DoctorController {
      */
     @GetMapping
     public ResponseEntity<Map<String,Object>> getDoctor() {
-        Map<String, Object> map=new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
 
         map.put("doctors",doctorService.getDoctors());
         return ResponseEntity.status(HttpStatus.OK).body(map);
@@ -200,9 +200,9 @@ public class DoctorController {
     @GetMapping("/filter/{name}/{time}/{speciality}")
     public ResponseEntity<Map<String, Object>> filter(
             @PathVariable String name, @PathVariable String time, @PathVariable String speciality) {
-        Map<String,Object> map=new HashMap<>();
+        Map<String,Object> map = new HashMap<>();
         
-        map=service.filterDoctor(name, speciality, time);
+        map = service.filterDoctor(name, speciality, time);
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
 

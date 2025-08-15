@@ -164,9 +164,9 @@ public class PatientService {
 
     public ResponseEntity<Map<String,Object>> getPatientDetails(String token) {
         Map<String, Object> map = new HashMap<>();
-        String email =tokenService.extractEmail(token);
+        String email = tokenService.extractEmail(token);
         Patient patient=patientRepository.findByEmail(email);
-
+        
         map.put("patient",patient);
         return ResponseEntity.status(HttpStatus.OK).body(map);
     }
