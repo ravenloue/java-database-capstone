@@ -9,6 +9,7 @@ const DOCTOR_API = API_BASE_URL + '/doctor/login'
 window.onload = function () {
     const adminBtn = document.getElementById("admin-btn");
     const doctorBtn = document.getElementById("doctor-btn");
+    const patientBtn = document.getElementById("patient-btn");
 
     if (adminBtn) {
         adminBtn.addEventListener("click", () => {
@@ -18,6 +19,13 @@ window.onload = function () {
     if (doctorBtn) {
         doctorBtn.addEventListener("click", () => {
             openModal("doctorLogin");
+        });
+    }
+
+    if (patientBtn) {
+        patientBtn.addEventListener("click", () => {
+            setRole("patient")
+            window.location.href = "/pages/patientDashboard.html";
         });
     }
 }

@@ -29,10 +29,10 @@ public class PatientController {
     }
 
     @GetMapping("/{token}")
-    public ResponseEntity<Map<String, Object>> getPatient(@PathVariable String token) {
+    public ResponseEntity<Map<String, Object>> getPatientData(@PathVariable String token) {
         Map<String, Object> map = new HashMap<>();
         ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, "patient");
-        if (!tempMap.getBody().isEmpty()) {
+        if (tempMap.getBody().isEmpty()) {
             map.putAll(tempMap.getBody());
             return new ResponseEntity<>(map, tempMap.getStatusCode());
         }
