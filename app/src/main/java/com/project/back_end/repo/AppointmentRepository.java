@@ -42,13 +42,15 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findByPatientId(Long patientId);
 
-    List<Appointment> findByPatient_IdAndStatusOrderByAppointmentTimeAsc(Long patientId, int status);
+    List<Appointment> findByPatient_IdAndStatusOrderByAppointmentTimeAsc(
+       Long patientId, int status);
 
     @Query("SELECT a FROM Appointment a " + "JOIN a.doctor d " +
            "WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%')) " +
            "AND a.patient.id = :patientId")
-    List<Appointment> filterByDoctorNameAndPatientId(@Param("doctorName") String doctorName,
-                                                     @Param("patientId") Long patientId);
+    List<Appointment> filterByDoctorNameAndPatientId(
+        @Param("doctorName") String doctorName,
+        @Param("patientId") Long patientId);
 
     @Query("SELECT a FROM Appointment a " + "JOIN a.doctor d " +
            "WHERE LOWER(d.name) LIKE LOWER(CONCAT('%', :doctorName, '%')) " +
@@ -61,4 +63,19 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Modifying
     @Query("UPDATE Appointment a SET a.status = :status WHERE a.id = :id")
     void updateStatus(int status,long id);
+
+    // AppointmentRepository.java
+    @Query("SELECT a FROM Appointment a " + "WHERE a.doctor.id = :doctorId " +
+           "AND a.appointmentTime >= :now ORDER BY a.appointmentTime ASC")
+    List<Appointment> findUpcomingByDoctor(@Param("doctorId") Long doctorId,
+        @Param("now") java.time.LocalDateTime now);
+
+    @Query("SELECT a FROM Appointment a " + "WHERE a.doctor.id = :doctorId " +
+           "AND a.appointmentTime >= :now AND LOWER(a.patient.name) LIKE " + 
+           "LOWER(CONCAT('%', :pname, '%')) ORDER BY a.appointmentTime ASC")
+    List<Appointment> findUpcomingByDoctorAndPatient(
+        @Param("doctorId") Long doctorId,
+        @Param("now") java.time.LocalDateTime now,
+        @Param("pname") String pname);
+
 }

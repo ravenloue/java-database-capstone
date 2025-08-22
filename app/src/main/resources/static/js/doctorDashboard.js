@@ -1,11 +1,12 @@
 // doctorDashboard.js
-import { getAllAppointments } from "./services/appointmentRecordService.js";
+import { getAllAppointments, getUpcomingAppointments } from "./services/appointmentRecordService.js";
 import { createPatientRow } from "./components/patientRows.js";
 
 const tableBody = document.getElementById("patientTableBody");
-let selectedDate = new Date().toISOString().split('T')[0];
+let selectedDate = null;
 let token = localStorage.getItem("token");
 let patientName = null;
+let mode = "upcoming";
 
 // Event Listeners Section
 
@@ -28,6 +29,7 @@ document.getElementById("searchBar").addEventListener("input", (e) => {
  * both the selectedDate variable and the date picker UI element.
  */
 document.getElementById("todayButton").addEventListener("click", () => {
+  mode = "byDate";
   selectedDate = new Date().toISOString().split('T')[0];
   document.getElementById("datePicker").value = selectedDate;
   loadAppointments();
@@ -40,7 +42,14 @@ document.getElementById("todayButton").addEventListener("click", () => {
  * Automatically refreshes the appointment list for the selected date.
  */
 document.getElementById("datePicker").addEventListener("change", (e) => {
-  selectedDate = e.target.value;
+  const value = e.target.value?.trim();
+  if (value) {
+    mode = "byDate";
+    selectedDate = value;
+  } else {
+    mode = "upcoming";
+    selectedDate = null;
+  }
   loadAppointments();
 });
 
@@ -57,26 +66,37 @@ document.getElementById("datePicker").addEventListener("change", (e) => {
  * @returns {Promise<void>} Completes when table is populated or error shown
  */
 async function loadAppointments() {
-
   try {
-    const response = await getAllAppointments(selectedDate, patientName, token);
+    tableBody.innerHTML = `<tr><td colspan="5">Loading...</td></tr>`;
+
+    let response;
+    if (mode === "upcoming") {
+      response = await getUpcomingAppointments(token, patientName);
+    } else {
+      // mode === 'byDate'
+      response = await getAllAppointments(selectedDate, patientName, token);
+    }
+
     const appointments = response.appointments || [];
-    
     tableBody.innerHTML = "";
 
     if (appointments.length === 0) {
-      const formattedDate = new Date(selectedDate).toLocaleDateString();
-      tableBody.innerHTML = `<tr><td colspan="5">No appointments found for ${formattedDate}.</td></tr>`;
+      const label =
+        mode === "upcoming"
+          ? "upcoming"
+          : `for ${new Date(selectedDate).toLocaleDateString()}`;
+      tableBody.innerHTML = `<tr><td colspan="5">No appointments found ${label}.</td></tr>`;
       return;
     }
-    appointments.forEach(appointment => {
+
+    appointments.forEach((appointment) => {
       const patient = {
         id: appointment.patientId,
         name: appointment.patientName,
         phone: appointment.patientPhone,
         email: appointment.patientEmail,
       };
-      const row = createPatientRow(patient,appointment.id,appointment.doctorId);
+      const row = createPatientRow(patient, appointment.id, appointment.doctorId);
       tableBody.appendChild(row);
     });
   } catch (error) {
@@ -93,6 +113,6 @@ async function loadAppointments() {
  * elements are available before attempting to access them.
  */
 window.addEventListener("DOMContentLoaded", () => {
-  renderContent();
+  renderContent?.();
   loadAppointments();
 });

@@ -104,3 +104,15 @@ export async function updateAppointment(appointment, token) {
     };
   }
 }
+
+export async function getUpcomingAppointments(token, patientName = null) {
+  const base = `${API_BASE_URL}/appointments/upcoming/${token}`;
+  const url = patientName ? `${base}?patientName=${encodeURIComponent(patientName)}` : base;
+
+  const res = await fetch(url, { headers: { "Accept": "application/json" } });
+  if (!res.ok) {
+    const err = await res.text().catch(() => "");
+    throw new Error(`Upcoming fetch failed: ${res.status} ${err}`);
+  }
+  return res.json();
+}

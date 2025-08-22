@@ -1,54 +1,31 @@
 // adminDashboard.js
+import { API_BASE_URL } from './config/config.js';
 import { openModal } from './components/modals.js';
 import { getDoctors  , filterDoctors , saveDoctor } from './services/doctorServices.js';
 import { createDoctorCard } from './components/doctorCard.js';
 
 // Event Listeners
-/** 
- * Add Doctor Button Click Handler
- * 
- * Opens the modal dialog for adding a new doctor to the system.
- */
 document.getElementById('addDocBtn').addEventListener('click', () => {
   openModal('addDoctor');
 });
-
-/**
- * DOM Content Loaded Handler
- * 
- * Initializes the admin dashboard by loading all doctor cards when the
- * page is fully loaded and DOM elements are ready.
- */
 document.addEventListener("DOMContentLoaded", () => {
   loadDoctorCards();
 });
-
-/**
- * Search Bar Input Handler
- * 
- * Implements debounced search with 300ms delay to prevent excessive API
- * calls while user types. Triggers doctor filtering on each input change.
- */
 document.getElementById("searchBar").addEventListener(
     "input", debounce(filterDoctorsOnChange, 300));
-
-/**
- * Time Filter Change Handler
- * 
- * Triggers doctor filtering when user selects a different time slot from
- * the dropdown. Works in combination with other active filters.
- */
 document.getElementById("filterTime").addEventListener(
     "change", filterDoctorsOnChange);
-
-/**
- * Specialty Filter Change Handler
- * 
- * Triggers doctor filtering when user selects a different medical
- * specialty. Combines with search and time filters for refined results.
- */
 document.getElementById("filterSpecialty").addEventListener(
     "change", filterDoctorsOnChange);
+document.getElementById('btnDailyReport').addEventListener(
+    'click', runDailyReport);
+document.getElementById('btnTopByMonth').addEventListener(
+    'click', runTopByMonth);
+document.getElementById('btnTopByYear').addEventListener(
+    'click', runTopByYear);
+document.getElementById('btnBackToDoctors').addEventListener(
+    'click', loadDoctorCards);
+
 
 /**
  * Loads all doctor cards from the API and renders them.
@@ -176,4 +153,102 @@ window.adminAddDoctor = async function() {
     } else {
         alert("Error: " + message);
     }
+}
+
+// ===== Fetchers =====
+async function runDailyReport() {
+  const date = document.getElementById('reportDate').value;
+  const token = localStorage.getItem('token');
+  if (!date) return alert('Pick a date');
+  if (!token) return alert('You are not logged in');
+
+  const url = `${API_BASE_URL}/reports/daily/${date}/${token}}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!res.ok) return alert(data.error || 'Failed to load daily report');
+  renderDailyTable(data.rows || []);
+}
+
+async function runTopByMonth() {
+  const m = Number(document.getElementById('reportMonth').value);
+  const y = Number(document.getElementById('reportYear').value);
+  const token = localStorage.getItem('token');
+  if (!m || !y) return alert('Provide month and year');
+  if (!token) return alert('You are not logged in');
+
+  const url = `${API_BASE_URL}/reports/top-doctor/month/${m}/${y}/${token}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!res.ok) return alert(data.error || 'Failed to load month report');
+  renderTopDocTable(data.rows || [], `Top Doctor — ${m}/${y}`);
+}
+
+async function runTopByYear() {
+  const y = Number(document.getElementById('reportYearOnly').value);
+  const token = localStorage.getItem('token');
+  if (!y) return alert('Provide year');
+  if (!token) return alert('You are not logged in');
+
+  const url = `${API_BASE_URL}/reports/top-doctor/year/${y}/${token}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  if (!res.ok) return alert(data.error || 'Failed to load year report');
+  renderTopDocTable(data.rows || [], `Top Doctor — ${y}`);
+}
+
+// ===== Renderers (into the SAME #content area) =====
+function renderDailyTable(rows) {
+  const content = document.getElementById('content');
+  if (!rows.length) {
+    content.innerHTML = `<p>No appointments for selected date.</p>`;
+    return;
+  }
+  content.innerHTML = `
+    <table class="report-table">
+      <thead class="table-header">
+        <tr>
+          <th>Doctor</th>
+          <th>Appointment Time</th>
+          <th>Status</th>
+          <th>Patient</th>
+          <th>Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td>${r.doctorName ?? ''}</td>
+            <td>${(r.appointmentTime ?? '').toString().replace('T',' ')}</td>
+            <td>${r.status ?? ''}</td>
+            <td>${r.patientName ?? ''}</td>
+            <td>${r.patientPhone ?? ''}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderTopDocTable(rows, title) {
+  const content = document.getElementById('content');
+  if (!rows.length) {
+    content.innerHTML = `<p>No data.</p>`;
+    return;
+  }
+  content.innerHTML = `
+    <table class="report-table">
+      <thead class="table-header">
+        <tr>
+          <th>Doctor ID</th>
+          <th>Patients Seen</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td>${r.doctorId ?? ''}</td>
+            <td>${r.patientsSeen ?? ''}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  `;
 }

@@ -14,11 +14,12 @@
 /* Overlay */
 .ripple-overlay {
   position: fixed;
+  inset: 0;
   width: 20px;
   height: 20px;
   background-color: #1c3745;
   border-radius: 50%;
-  z-index: 9999;
+  z-index: 999;
   transform: translate(-50%, -50%) scale(0);
   transition: transform 1s ease-out, opacity 1s ease;
 }
@@ -31,17 +32,23 @@
 /* Modal */
 .modalApp {
   position: fixed;
+  inset: 0;
   bottom: -100%;
   left: 50%;
   transform: translateX(-50%);
   width: 50%;
   background: #fff;
   padding: 20px;
-  z-index: 10000;
+  z-index: 1000;
   transition: bottom 1.5s ease-in;
   box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
   border-radius: 10px 10px 0 0;
   text-align: center;
+}
+
+.modalApp.active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .modalApp h2 {

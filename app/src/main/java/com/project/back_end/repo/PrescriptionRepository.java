@@ -1,16 +1,18 @@
 package com.project.back_end.repo;
 
-import com.project.back_end.models.Prescription;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.stereotype.Repository;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.project.back_end.models.Prescription;
 
 /**
  * Repository interface for the Prescription model.
  * Enables CRUD operations and custom queries in MongoDB using Spring Data.
  */
 @Repository
-public interface PrescriptionRepository extends MongoRepository<Prescription, String> {
+public interface PrescriptionRepository extends JpaRepository<Prescription, String> {
 
     List<Prescription> findByAppointmentId(Long appointmentId);
 }

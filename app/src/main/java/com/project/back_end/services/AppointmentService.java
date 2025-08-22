@@ -204,4 +204,39 @@ public class AppointmentService {
     {
         appointmentRepository.updateStatus(1, appointmentId);
     }
+
+    @Transactional
+    public Map<String, Object> getUpcomingAppointments(String pname, String token) {
+        Map<String, Object> map = new HashMap<>();
+
+        String email = tokenService.extractEmail(token);
+        Long doctorId = doctorRepository.findByEmail(email).getId();
+
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+
+        List<Appointment> appointments;
+        if (pname == null || pname.isBlank() || "null".equalsIgnoreCase(pname)) {
+            appointments = appointmentRepository.findUpcomingByDoctor(doctorId, now);
+        } else {
+            appointments = appointmentRepository.findUpcomingByDoctorAndPatient(doctorId, now, pname);
+        }
+
+        List<AppointmentDTO> rows = appointments.stream()
+            .map(app -> new AppointmentDTO(
+                app.getId(),
+                app.getDoctor().getId(),
+                app.getDoctor().getName(),
+                app.getPatient().getId(),
+                app.getPatient().getName(),
+                app.getPatient().getEmail(),
+                app.getPatient().getPhone(),
+                app.getPatient().getAddress(),
+                app.getApptTime(),      // or getAppointmentTime()
+                app.getStatus()))
+            .toList();
+
+        map.put("appointments", rows);
+        return map;
+    }
+
 }

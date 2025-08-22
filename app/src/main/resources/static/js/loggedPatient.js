@@ -28,20 +28,21 @@ function loadDoctorCards() {
 export function showBookingOverlay(e, doctor, patient) {
   const button = e.target;
   const rect = button.getBoundingClientRect();
-  console.log(patient.name)
-  console.log(patient)
   const ripple = document.createElement("div");
+  ripple.id = "ripple";
   ripple.classList.add("ripple-overlay");
   ripple.style.left = `${e.clientX}px`;
   ripple.style.top = `${e.clientY}px`;
   document.body.appendChild(ripple);
 
-  setTimeout(() => ripple.classList.add("active"), 50);
+  setTimeout(() => ripple.classList.add("active"), 5);
 
   const modalApp = document.createElement("div");
+  modalApp.id = "modal";
   modalApp.classList.add("modalApp");
 
   modalApp.innerHTML = `
+    <span id="closeModal" class="close">&times;</span>
     <h2>Book Appointment</h2>
     <input class="input-field" type="text" value="${patient.name}" disabled />
     <input class="input-field" type="text" value="${doctor.name}" disabled />
@@ -84,14 +85,24 @@ export function showBookingOverlay(e, doctor, patient) {
   });
 }
 
+function closeBookingModal() {
+  const modal = document.getElementById("modal");
+  const ripple = document.getElementById("ripple");
 
+  setTimeout(() => {
+    modal?.remove();
+    ripple?.remove();
+  }, 200);
+}
+
+document.addEventListener('click', (e) => {
+  if (e.target.id === "closeModal") closeBookingModal();
+})
 
 // Filter Input
 document.getElementById("searchBar").addEventListener("input", filterDoctorsOnChange);
 document.getElementById("filterTime").addEventListener("change", filterDoctorsOnChange);
 document.getElementById("filterSpecialty").addEventListener("change", filterDoctorsOnChange);
-
-
 
 function filterDoctorsOnChange() {
   const searchBar = document.getElementById("searchBar").value.trim();
@@ -122,7 +133,7 @@ function filterDoctorsOnChange() {
     })
     .catch(error => {
       console.error("Failed to filter doctors:", error);
-      alert("❌ An error occurred while filtering doctors.");
+      alert("An error occurred while filtering doctors.");
     });
 }
 

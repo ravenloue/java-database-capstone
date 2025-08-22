@@ -59,6 +59,20 @@
                             <option value="Gastroenterologist">Gastroenterologist</option>
                             <option value="General">General Physician</option>
                         </select>
+                        <div class="report-actions">
+                            <button id="btnDailyReport" class="report-btn">Daily Report</button>
+                            <input type="date" id="reportDate" />
+
+                            <button id="btnTopByMonth" class="report-btn">Top Doctor (Month)</button>
+                            <input type="number" id="reportMonth" min="1" max="12" placeholder="MM" style="width:80px" />
+                            <input type="number" id="reportYear" min="2000" max="2100" placeholder="YYYY" style="width:100px" />
+
+                            <button id="btnTopByYear" class="report-btn">Top Doctor (Year)</button>
+                            <input type="number" id="reportYearOnly" min="2000" max="2100" placeholder="YYYY" style="width:100px" />
+
+                            <button id="btnBackToDoctors" class="dashboard-btn small" title="Back to doctor list">Back</button>
+                        </div>
+
                     </div>
                     <div id="content"></div>
                 </main>

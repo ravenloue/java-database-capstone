@@ -1,21 +1,30 @@
 package com.project.back_end.controllers;
 
 
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.project.back_end.models.Appointment;
 import com.project.back_end.services.AppointmentService;
 import com.project.back_end.services.Service;
 
 import jakarta.validation.Valid;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * REST controller for appointment management endpoints.
@@ -65,7 +74,56 @@ public class AppointmentController {
         map = appointmentService.getAppointment(patientName, date, token);
         return ResponseEntity.ok(map);
     }
-    
+
+    /**
+     * GET endpoint to retrieve all upcoming appointments for a doctor.
+     *
+     * Validates doctor token before processing. Returns all future appointments
+     * (appointments with a start time greater than or equal to the current time),
+     * ordered by appointment time. Requires a valid JWT token belonging to a doctor.
+     *
+     * @param token JWT token for doctor authentication
+     * @return ResponseEntity with list of upcoming appointments or error message
+     *         if token validation fails
+     */
+    @GetMapping("/upcoming/{patientName}/{token}")
+    public ResponseEntity<Map<String,Object>> getUpcomingAppointments(
+            @PathVariable String patientName,
+            @PathVariable String token) {
+
+        Map<String, Object> body = new HashMap<>();
+        ResponseEntity<Map<String,String>> temp = service.validateToken(token, "doctor");
+        Map<String,String> tempBody = temp.getBody();
+
+        if (temp.getStatusCode() != HttpStatus.OK ||
+            (tempBody != null && tempBody.containsKey("error"))) {
+            if (tempBody != null) body.putAll(tempBody);
+            return new ResponseEntity<>(body, temp.getStatusCode());
+        }
+
+        body = appointmentService.getUpcomingAppointments(patientName, token);
+        return ResponseEntity.ok(body);
+    }
+
+    /**
+     * GET endpoint to retrieve all upcoming appointments for a doctor, filtered by patient name.
+     *
+     * Validates doctor token before processing. Returns all future appointments
+     * (appointments with a start time greater than or equal to the current time),
+     * ordered by appointment time, restricted to those belonging to a specific patient.
+     * Requires a valid JWT token belonging to a doctor.
+     *
+     * @param patientName Patient name substring to filter results (case-insensitive)
+     * @param token JWT token for doctor authentication
+     * @return ResponseEntity with list of upcoming appointments filtered by patient
+     *         name, or error message if token validation fails
+     */
+    @GetMapping("/upcoming/{token}")
+    public ResponseEntity<Map<String,Object>> getUpcomingNoFilter(
+            @PathVariable String token) {
+        return getUpcomingAppointments("null", token);
+    }
+
     /**
      * POST endpoint to book a new appointment.
      * 
