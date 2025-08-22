@@ -19,20 +19,21 @@ A healthcare management application built with **Spring Boot** and **PostgreSQL*
 
 ## Overview
 
-The Smart Clinic Management System project was developed as a full-stack healthcare system with a layered architecture from the IBM Java Developer Course on Coursera. It manages patient-doctor interactions, supports appointment booking, and generates admin reports using PostgreSQL functions. Unlike earlier versions that used a hybrid of MySQL and MongoDB, this system was redesigned for **PostgreSQL only**, simplifying the data model and improving deployment.
+The Smart Clinic Management System project was developed as a full-stack healthcare system with a layered architecture during the [IBM Java Developer Professional Course on Coursera](https://www.coursera.org/professional-certificates/java-developer). It manages patient-doctor interactions, supports appointment booking, and generates admin reports using PostgreSQL functions. Unlike the original capstone project that used a hybrid of MySQL and MongoDB, this system was redesigned for PostgreSQL only, simplifying the data model and allowed for me to only have to worry about hosting a single database. 
 
 ### The Idea
 
 * Create a role-based healthcare platform:
   * Patients book and manage appointments.
-  * Doctors view today’s and upcoming appointments.
-  * Admins manage users, doctors, and analytics.
+  * Doctors view appointments and can manage prescription information.
+  * Admins manage doctors and can pull reports.
 * Implement strong relational integrity and reporting through PostgreSQL.
 * Provide both RESTful APIs and server-rendered dashboards.
 
 ### Screenshots
 
-*(Add screenshots here)*
+![landing page](https://github.com/ravenloue/java-database-capstone/blob/main/ss/landing-page.png)
+[admin dashboard](https://github.com/ravenloue/java-database-capstone/blob/main/ss/admin-logged-in.png) | [doctor dashboard](https://github.com/ravenloue/java-database-capstone/blob/main/ss/doctor-logged-in.png) | [patient dashboard](https://github.com/ravenloue/java-database-capstone/blob/main/ss/patient-dash.png)
 
 ---
 
@@ -45,19 +46,21 @@ The Smart Clinic Management System project was developed as a full-stack healthc
 * PostgreSQL
 * Spring Data JPA
 * Thymeleaf + Vanilla JS
+* HTML5 + CSS3
 * Docker
 * Render
 
 ### What I learned
 
+* Managing role-based access in a full-stack app with JWT authentication.
+* Building layered architecture: Controllers → Services → Repositories → Database.
 * How to migrate a hybrid MySQL/MongoDB system into a pure PostgreSQL schema.
 * Writing and integrating PostgreSQL functions with Spring Data JPA for admin reports.
-* Building layered architecture: Controllers → Services → Repositories → Database.
-* Managing role-based access in a full-stack app with JWT authentication.
 
 ### Continued development
 
 * **August 2025**
+  * **August 22** - Added screenshots after getting it hosted live.
   * **August 21** – Added upcoming appointments feature for doctors.
   * **August 20** - Migrated prescriptions from MongoDB to PostgreSQL tables.
   * **August 18** - Migrated from MySQL to normalized PostgreSQL for deployment purposes.
@@ -83,4 +86,4 @@ The Smart Clinic Management System project was developed as a full-stack healthc
 ## Acknowledgments
 
 * Thanks to various tutorials on PostgreSQL functions and Spring Data JPA.
-* Inspired by earlier hybrid database architecture projects.
+* Thanks to the IBM Java Development Capstone project for providing the project idea as a starting place.
