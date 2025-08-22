@@ -35,6 +35,15 @@ The Smart Clinic Management System project was developed as a full-stack healthc
 ![landing page](https://github.com/ravenloue/java-database-capstone/blob/main/ss/landing-page.png)
 [admin dashboard](https://github.com/ravenloue/java-database-capstone/blob/main/ss/admin-logged-in.png) | [doctor dashboard](https://github.com/ravenloue/java-database-capstone/blob/main/ss/doctor-logged-in.png) | [patient dashboard](https://github.com/ravenloue/java-database-capstone/blob/main/ss/patient-dash.png)
 
+### Try it out Live!
+
+[Smart Clinic CMS](https://smart-clinic-cms-latest.onrender.com/) Hosted on Render. <br />
+I'm using free hosting right now, so it takes a few moments to load. To view different pages use the following logins: <br />
+
+Admin Dashboard: admin | admin@1234 <br />
+Doctor Dashboard: dr.adams@example.com | pass12345 <br />
+Patient Dashboard: jane.doe@example.com | passJane1
+
 ---
 
 ## My Process
