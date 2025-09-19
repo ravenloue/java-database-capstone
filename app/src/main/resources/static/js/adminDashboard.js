@@ -239,6 +239,7 @@ function renderTopDocTable(rows, title) {
       <thead class="table-header">
         <tr>
           <th>Doctor ID</th>
+          <th>Name</th>
           <th>Patients Seen</th>
         </tr>
       </thead>
@@ -246,6 +247,7 @@ function renderTopDocTable(rows, title) {
         ${rows.map(r => `
           <tr>
             <td>${r.doctorId ?? ''}</td>
+            <td>${r.doctorName ?? ''}</td>
             <td>${r.patientsSeen ?? ''}</td>
           </tr>`).join('')}
       </tbody>

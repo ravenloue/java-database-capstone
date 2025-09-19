@@ -14,7 +14,7 @@ public class Prescription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     @NotNull(message = "patientName must not be null")
     @Size(min = 3, max = 100)
@@ -35,7 +35,7 @@ public class Prescription {
 
     // No argument constructor
     public Prescription() {
-        this.id = "0";
+        this.id = 0;
         this.patientName = "Default Name";
         this.appointmentId = 0L;
         this.medication = "Medication";
@@ -43,7 +43,7 @@ public class Prescription {
         this.doctorNotes = "Notes";
     }
 
-    public Prescription(String id, String patientName, Long appointmentId, String medication, String dosage, String doctorNotes) {
+    public Prescription(int id, String patientName, Long appointmentId, String medication, String dosage, String doctorNotes) {
         this.id = id;
         this.patientName = patientName;
         this.appointmentId = appointmentId;
@@ -53,7 +53,7 @@ public class Prescription {
     }
 
     // Getters
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -78,7 +78,7 @@ public class Prescription {
     }
 
     // Setters
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

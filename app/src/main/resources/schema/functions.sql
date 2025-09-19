@@ -27,19 +27,22 @@ CREATE OR REPLACE FUNCTION get_doctor_with_most_patients_by_month(
   input_month int,
   input_year  int
 )
-RETURNS TABLE (
-  doctor_id     bigint,
+RETURNS TABLE(
+  doctor_id    int,
+  doctor_name  text,
   patients_seen bigint
 )
 LANGUAGE sql
 AS $$
   SELECT
-    doctor_id,
-    COUNT(patient_id) AS patients_seen
-  FROM appointment
-  WHERE EXTRACT(MONTH FROM appointment_time) = input_month
-    AND EXTRACT(YEAR  FROM appointment_time) = input_year
-  GROUP BY doctor_id
+    a.doctor_id,
+    d.name AS doctor_name,
+    COUNT(a.patient_id) AS patients_seen
+  FROM appointment a
+  JOIN doctor d ON d.id = a.doctor_id
+  WHERE EXTRACT(MONTH FROM a.appointment_time) = input_month
+    AND EXTRACT(YEAR  FROM a.appointment_time) = input_year
+  GROUP BY a.doctor_id, d.name
   ORDER BY patients_seen DESC
   LIMIT 1;
 $$;
@@ -49,16 +52,19 @@ CREATE OR REPLACE FUNCTION get_doctor_with_most_patients_by_year(
 )
 RETURNS TABLE (
   doctor_id     bigint,
+  doctor_name   text,
   patients_seen bigint
 )
 LANGUAGE sql
 AS $$
   SELECT
-    doctor_id,
-    COUNT(patient_id) AS patients_seen
-  FROM appointment
-  WHERE EXTRACT(YEAR FROM appointment_time) = input_year
-  GROUP BY doctor_id
+    a.doctor_id,
+    d.name AS doctor_name,
+    COUNT(a.patient_id) AS patients_seen
+  FROM appointment a
+  JOIN doctor d ON d.id = a.doctor_id
+  WHERE EXTRACT(YEAR FROM a.appointment_time) = input_year
+  GROUP BY a.doctor_id, d.name
   ORDER BY patients_seen DESC
   LIMIT 1;
 $$;
