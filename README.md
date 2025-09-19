@@ -68,11 +68,13 @@ Patient Dashboard: jane.doe@example.com | passJane1
 
 ### Continued development
 
+* **September 2025**
+  * **Sept 18** - Swapped from Render to Supabase for longer support. Added Dr Names to Admin reports for clarity.
 * **August 2025**
-  * **August 22** - Added screenshots after getting it hosted live.
-  * **August 21** – Added upcoming appointments feature for doctors.
-  * **August 20** - Migrated prescriptions from MongoDB to PostgreSQL tables.
-  * **August 18** - Migrated from MySQL to normalized PostgreSQL for deployment purposes.
+  * **Aug 22** - Added screenshots after getting it hosted live.
+  * **Aug 21** – Added upcoming appointments feature for doctors.
+  * **Aug 20** - Migrated prescriptions from MongoDB to PostgreSQL tables.
+  * **Aug 18** - Migrated from MySQL to normalized PostgreSQL for deployment purposes.
 * **July 2025** – Completed IBM Java Developer Capstone project and received certification.
 * **Earlier** – Completed patient dashboard with appointment booking modal, integrated JWT login.
 
