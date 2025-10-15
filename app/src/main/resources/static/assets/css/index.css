@@ -73,13 +73,12 @@ h2 {
 
 /* Modal Styles */
 .modal {
-  visibility: hidden;
+  display: none;
   z-index: 9999;
   width: 100%;
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;

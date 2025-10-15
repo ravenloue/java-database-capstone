@@ -1,13 +1,13 @@
 /* Patient Dashboard */
 
 /* Card actions */
-.card-actions {
+.card-actions, .card-actions button {
   background-color: #244557;
   padding: 10px;
   text-align: center;
 }
 
-.card-actions:hover{
+.card-actions:hover, .card-actions:hover button{
   background-color: #1c3745;
 }
 

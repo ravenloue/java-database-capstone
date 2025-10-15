@@ -1,18 +1,27 @@
 package com.project.back_end.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.services.DoctorService;
 import com.project.back_end.services.Service;
+
 import jakarta.validation.Valid;
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -26,13 +35,14 @@ import java.util.Map;
 @RequestMapping("${api.path}"+"doctor")
 public class DoctorController {
 
+    private final AdminController adminController;
     private final DoctorService doctorService;
     private final Service service;
 
-    @Autowired
-    public DoctorController(DoctorService doctorService,Service service) {
+    public DoctorController(DoctorService doctorService,Service service, AdminController adminController) {
         this.doctorService = doctorService;
         this.service = service;
+        this.adminController = adminController;
     }
 
     /**
@@ -136,7 +146,7 @@ public class DoctorController {
      * @param token Admin JWT token for authorization
      * @return ResponseEntity with update status and message
      */
-    @PutMapping("/{token}")
+    @PatchMapping("/{token}")
     public ResponseEntity<Map<String, String>> updateDoctor(@RequestBody @Valid Doctor doctor,
             @PathVariable String token) {
         Map<String, String> response = new HashMap<>();

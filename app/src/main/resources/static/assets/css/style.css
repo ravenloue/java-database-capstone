@@ -163,7 +163,7 @@
   
 
   .modal {
-    visibility: hidden;
+    display: none;
     position: fixed;
     z-index: 999;
     padding-top: 60px;
@@ -279,22 +279,34 @@
   }
   
   .card-actions {
-    background-color: #e28282;
-    padding: 10px;
+    display: flex;
     text-align: center;
+    margin-top: 30px;
   }
-
-  .card-actions:hover {
-    background-color: #d26969;
-  }
-  
   .card-actions button {
-    background: transparent;
+    display: flex;
+    flex: 1;
+    justify-content: center;
     border: none;
+    border-radius: 0;
     color: #fff;
     font-weight: bold;
     cursor: pointer;
   }
+  .card-actions #deleteDocBtn {
+  	background-color: #e28282;
+  }
+  .card-actions #deleteDocBtn:hover {
+    background-color: #d26969;
+  }
+  .card-actions #updateDocBtn {
+  	background-color: #015c5d;
+  }
+  .card-actions #updateDocBtn:hover {
+  	background-color: #003e3e;
+  }
+  
+  
   
   .card-actions button:hover {
     color: #fff;

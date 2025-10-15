@@ -14,29 +14,15 @@ function renderHeader() {
   const role = localStorage.getItem("userRole");
   const token = localStorage.getItem("token");
 
-  // Special case: homepage gets minimal header with just logo
-  if (window.location.pathname.endsWith("/")) {
-    localStorage.removeItem("userRole")
-    headerDiv.innerHTML = `
-      <header class="header">
-        <a href="/" class="logo-link" style="text-decoration: none;">
-          <div class="logo-section">
-            <img src="../assets/images/logo/logo.png" alt="Smart Clinic logo" class="logo-img">
-            <span class="logo-title">Smart Clinic</span>
-          </div>
-        </a>
-      </header>`;
-    return;
-  }
-
   // Build base header structure with logo
   let headerContent = `
     <header class="header">
-      <div class="logo-section">
-        <img src="../assets/images/logo/logo.png" alt="Smart Clinic logo" class="logo-img">
-        <span class="logo-title">Smart Clinic</span>
-      </div>
-      <nav>`;
+	  <a href="/" class="logo-link" style="text-decoration: none;" onclick="defaultUser()">
+        <div class="logo-section">
+          <img src="../assets/images/logo/logo.png" alt="Smart Clinic logo" class="logo-img">
+          <span class="logo-title">Smart Clinic</span>
+        </div>
+	  </a>`;
   
   // Validate authenticated users have valid tokens
   if ((role === "loggedPatient" || role === "admin" || role === "doctor") && !token) {
@@ -46,31 +32,39 @@ function renderHeader() {
     return;
   } else if (role === "admin") {
     // Admin header: Add Doctor button and logout
-    headerContent += `
+    headerContent += `<nav>
            <button id="addDocBtn" class="adminBtn">Add Doctor</button>
-           <a href="#" onclick="logout()">Logout</a>`;
+           <a href="#" onclick="logout()">Logout</a></nav>`;
   } else if (role === "doctor") {
     // Doctor header: Home button and logout
-    headerContent += `
+    headerContent += `<nav>
            <button class="adminBtn"  onclick="selectRole('doctor')">Home</button>
-           <a href="#" onclick="logout()">Logout</a>`;
+           <a href="#" onclick="logout()">Logout</a></nav>`;
   } else if (role === "patient") {
     // Non-logged patient: Login and signup options
-    headerContent += `
+    headerContent += `<nav>
            <button id="patientLogin" class="adminBtn">Login</button>
-           <button id="patientSignup" class="adminBtn">Sign Up</button>`;
+           <button id="patientSignup" class="adminBtn">Sign Up</button></nav>`;
   } else if (role === "loggedPatient") {
     // Logged-in patient: Home, appointments, and logout
-    headerContent += `
+    headerContent += `<nav>
            <button id="home" class="adminBtn" onclick="window.location.href='/pages/loggedPatientDashboard.html'">Home</button>
            <button id="patientAppointments" class="adminBtn" onclick="window.location.href='/pages/patientAppointments.html'">Appointments</button>
-           <a href="#" onclick="logoutPatient()">Logout</a>`;
+           <a href="#" onclick="logoutPatient()">Logout</a></nav>`;
   }
 
-  headerContent += `</nav></header>`;
+  headerContent += `</header>`;
 
   headerDiv.innerHTML = headerContent;
   attachHeaderButtonListeners();
+}
+
+/**
+ * Removes "patient" role on homepage load
+ */
+function defaultUser() {
+	const role = localStorage.getItem("userRole");
+	if(role === "patient") { localStorage.removeItem("userRole"); }
 }
 
 /**
@@ -85,7 +79,6 @@ function renderHeader() {
 function attachHeaderButtonListeners() {
   const doctorBtn = document.getElementById("doctorBtn");
   const adminBtn = document.getElementById("adminBtn");
-  const addDocBtn = document.getElementById("addDocBtn");
   
   // Doctor login button handler
   if (doctorBtn) {

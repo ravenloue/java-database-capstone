@@ -40,6 +40,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Transactional
     void deleteAllByDoctorId(Long doctorId);
 
+    //@Query("SELECT a FROM Appointment a "+ "LEFT JOIN FETCH a.patient p " + "WHERE p.id = :patientId ")
     List<Appointment> findByPatientId(Long patientId);
 
     List<Appointment> findByPatient_IdAndStatusOrderByAppointmentTimeAsc(
@@ -64,7 +65,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Query("UPDATE Appointment a SET a.status = :status WHERE a.id = :id")
     void updateStatus(int status,long id);
 
-    // AppointmentRepository.java
     @Query("SELECT a FROM Appointment a " + "WHERE a.doctor.id = :doctorId " +
            "AND a.appointmentTime >= :now ORDER BY a.appointmentTime ASC")
     List<Appointment> findUpcomingByDoctor(@Param("doctorId") Long doctorId,

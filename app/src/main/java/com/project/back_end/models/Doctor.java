@@ -21,23 +21,25 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "name must not be null")
+    @NotNull(message = "Name must not be null")
     @Size(min = 3, max = 100)
     private String name;
 
-    @NotNull(message = "specialty must not be null")
+    @NotNull(message = "Specialty must not be null")
     @Size(min = 3, max = 50)
     private String specialty;
     
     @Email
-    @NotNull(message = "email must not be null")
+    @NotNull(message = "Email must not be null")
     private String email;
 
-    @Size(min = 6)
+    @Size(min = 6, max = 20,
+    	  message = "The password must be between {min} and {max} characters")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}$")
+    @Pattern(regexp = "^\\d{3}-\\d{3}-\\d{4}$",
+    		message = "The phone number must be in the following format ###-###-####")
     private String phone;
 
     @ElementCollection

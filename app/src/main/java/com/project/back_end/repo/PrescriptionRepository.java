@@ -12,7 +12,7 @@ import com.project.back_end.models.Prescription;
  * Enables CRUD operations and custom queries in MongoDB using Spring Data.
  */
 @Repository
-public interface PrescriptionRepository extends JpaRepository<Prescription, String> {
+public interface PrescriptionRepository extends JpaRepository<Prescription, Integer> {
 
     List<Prescription> findByAppointmentId(Long appointmentId);
 }

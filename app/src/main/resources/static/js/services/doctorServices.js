@@ -50,6 +50,30 @@ export async function deleteDoctor(id, token) {
 }
 
 /**
+ * Updates an existing doctor by ID with admin privileges.
+ *
+ * @async
+ * @param {number|string} id - Doctor ID to update
+ * @param {Object} doctor - Updated doctor payload
+ * @param {string} token - Admin JWT token for authentication
+ * @returns {Promise<Object>} Object with success boolean and message
+ */
+export async function updateDoctor(doctor, token) {
+  try {
+    const response = await fetch(`${DOCTOR_API}/${token}`, {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify(doctor),
+    });
+    const result = await response.json();
+    return { success: response.ok, message: result.message };
+  } catch (error) {
+    console.error("Error updating doctor: ", error);
+    return { success: false, message: "Server error" };
+  }
+}
+
+/**
  * Creates a new doctor account with admin privileges.
  * 
  * Posts doctor data including credentials and availability. Validates

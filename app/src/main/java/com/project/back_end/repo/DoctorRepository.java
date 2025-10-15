@@ -1,10 +1,12 @@
 package com.project.back_end.repo;
 
-import com.project.back_end.models.Doctor;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
+import com.project.back_end.models.Doctor;
 
 /**
  * Repository interface for the Doctor entity.

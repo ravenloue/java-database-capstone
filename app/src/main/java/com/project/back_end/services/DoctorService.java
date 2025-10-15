@@ -10,14 +10,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import com.project.back_end.DTO.Login;
 import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.repo.AppointmentRepository;
 import com.project.back_end.repo.DoctorRepository;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -100,10 +103,13 @@ public class DoctorService {
     public List<Doctor> getDoctors() {
         List<Doctor> doctors = doctorRepository.findAll();
 
+        // Sort by ID
+        doctors.sort((a, b) -> Long.compare(a.getId(), b.getId()));
+
         doctors.forEach(doc -> doc.getAvailability().size());
         return doctors;
     }
-
+    
     public int deleteDoctor(long id) {
         Optional<Doctor> doctor = doctorRepository.findById(id);
 
@@ -215,7 +221,6 @@ public class DoctorService {
         map.put("doctors", filteredDoctors);
         return map;
     }
-
 
     public  List<Doctor> filterDoctorByTime(List<Doctor> doctors,String amOrPm) {
         return doctors.stream()

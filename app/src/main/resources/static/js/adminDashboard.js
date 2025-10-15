@@ -1,8 +1,10 @@
 // adminDashboard.js
 import { API_BASE_URL } from './config/config.js';
 import { openModal } from './components/modals.js';
-import { getDoctors  , filterDoctors , saveDoctor } from './services/doctorServices.js';
+import { getDoctors , filterDoctors , saveDoctor, updateDoctor } from './services/doctorServices.js';
 import { createDoctorCard } from './components/doctorCard.js';
+
+let doctors = getDoctors();
 
 // Event Listeners
 document.getElementById('addDocBtn').addEventListener('click', () => {
@@ -24,7 +26,7 @@ document.getElementById('btnTopByMonth').addEventListener(
 document.getElementById('btnTopByYear').addEventListener(
     'click', runTopByYear);
 document.getElementById('btnBackToDoctors').addEventListener(
-    'click', loadDoctorCards);
+    'click', loadDoctorCards(doctors));
 
 
 /**
@@ -37,9 +39,9 @@ document.getElementById('btnBackToDoctors').addEventListener(
  * @export
  * @function loadDoctorCards
  */
-export function loadDoctorCards() {
-  getDoctors()
-    .then(doctors => {
+export function loadDoctorCards(_doctors) {
+    try { 
+	  doctors => {
       const contentDiv = document.getElementById("content");
       contentDiv.innerHTML = ""; 
 
@@ -47,10 +49,10 @@ export function loadDoctorCards() {
         const card = createDoctorCard(doctor);
         contentDiv.appendChild(card);
       });
-    })
-    .catch(error => {
+    }
+	} catch(error){
       console.error(" Failed to load doctors:", error);
-    });
+    }
 }
 
 /**
@@ -149,6 +151,60 @@ window.adminAddDoctor = async function() {
 
     if (success) {
         document.getElementById("modal").style.visibility = "hidden";
+        window.location.reload();
+    } else {
+        alert("Error: " + message);
+    }
+}
+
+/**
+ * Handles the doctor update form submission from modal.
+ * 
+ * Collects updated form data and compares with existing values. Only sends
+ * changed fields to backend to preserve unchanged data. Validates token
+ * presence before submission. Shows success/error alerts and refreshes page
+ * on successful update. Global function for modal access.
+ * 
+ * @async
+ * @global
+ * @function adminUpdateDoctor
+ */
+window.adminUpdateDoctor = async function() {
+    const id = document.getElementById('doctorId').value;
+    const name = document.getElementById('doctorName').value;
+    const specialty = document.getElementById('specialization').value;
+    const email = document.getElementById('doctorEmail').value;
+    const phone = document.getElementById('doctorPhone').value;
+    const checkboxes = document.querySelectorAll('input[name="availability"]:checked');
+    const availableTimes = Array.from(checkboxes).map(cb => cb.value);
+
+    // Validate required fields
+    if (!name || !specialty || !email) {
+        alert("Please fill in all required fields");
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Token expired or not found. Please log in again.");
+        return;
+    }
+
+    // Build update object
+    const updateData = {
+        id,
+        name,
+        specialty,
+        email,
+        phone,
+        availableTimes
+    };
+    
+    const { success, message } = await updateDoctor(updateData, token);
+
+    if (success) {
+        alert(message || "Doctor updated successfully");
+        document.getElementById("modal").style.display = "none";
         window.location.reload();
     } else {
         alert("Error: " + message);
