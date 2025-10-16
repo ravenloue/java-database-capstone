@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.back_end.DTO.Login;
+import com.project.back_end.DTO.DoctorUpdateDTO;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.services.DoctorService;
 import com.project.back_end.services.Service;
@@ -147,7 +148,7 @@ public class DoctorController {
      * @return ResponseEntity with update status and message
      */
     @PatchMapping("/{token}")
-    public ResponseEntity<Map<String, String>> updateDoctor(@RequestBody @Valid Doctor doctor,
+    public ResponseEntity<Map<String, String>> updateDoctor(@RequestBody @Valid DoctorUpdateDTO doctor,
             @PathVariable String token) {
         Map<String, String> response = new HashMap<>();
         ResponseEntity<Map<String,String>> tempMap= service.validateToken(token, "admin");

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.project.back_end.DTO.Login;
+import com.project.back_end.DTO.DoctorUpdateDTO;
 import com.project.back_end.models.Appointment;
 import com.project.back_end.models.Doctor;
 import com.project.back_end.repo.AppointmentRepository;
@@ -84,14 +85,24 @@ public class DoctorService {
         }
     }
 
-    public int updateDoctor(Doctor doctor) {
-        Optional<Doctor> result = doctorRepository.findById(doctor.getId());
+    public int updateDoctor(DoctorUpdateDTO doctor) {
+        Optional<Doctor> existingDoc = doctorRepository.findById(doctor.getId());
 
-        if (!result.isPresent()) {
+        if (!existingDoc.isPresent()) {
             return -1;
         }
+
         try {
-            doctorRepository.save(doctor);
+            Doctor updateDoc = existingDoc.get();
+            
+            // Update DTO fields
+            updateDoc.setName(doctor.getName());
+            updateDoc.setSpecialty(doctor.getSpecialty());
+            updateDoc.setEmail(doctor.getEmail());
+            updateDoc.setPhone(doctor.getPhone());
+            updateDoc.setAvailability(doctor.getAvailability());
+            
+            doctorRepository.save(updateDoc);
             return 1;
         } catch (Exception e) {
             System.err.println("Error saving doctor: " + e.getMessage());
